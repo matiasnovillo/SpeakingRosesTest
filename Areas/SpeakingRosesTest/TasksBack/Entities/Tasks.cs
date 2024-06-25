@@ -49,13 +49,13 @@ namespace SpeakingRosesTest.Areas.SpeakingRosesTest.TasksBack.Entities
         [Library.ModelAttributeValidator.Required("Description", "Description")]
         public string? Description { get; set; }
 
-        [Library.ModelAttributeValidator.Key("PriorityId", "PriorityId")]
+        [Library.ModelAttributeValidator.Key("Priority", "PriorityId")]
         public int PriorityId { get; set; }
 
-        [Library.ModelAttributeValidator.DateTime("DueDate", "DueDate", true, "1753-01-01T12:00", "9998-12-30T23:59")]
+        [Library.ModelAttributeValidator.DateTime("Due date", "DueDate", true, "1753-01-01T12:00", "9998-12-30T23:59")]
         public DateTime DueDate { get; set; }
 
-        [Library.ModelAttributeValidator.Key("StatusId", "StatusId")]
+        [Library.ModelAttributeValidator.Key("Status", "StatusId")]
         public int StatusId { get; set; }
     
         public string ToStringOnlyValuesForHTML()
