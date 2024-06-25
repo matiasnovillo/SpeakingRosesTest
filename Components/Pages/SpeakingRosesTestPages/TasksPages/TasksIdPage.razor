@@ -1,0 +1,795 @@
+@page "/SpeakingRosesTest/TasksPage/{TasksId:int}"
+
+@using SpeakingRosesTest.Areas.SpeakingRosesTest.TasksBack.Repositories;
+@using SpeakingRosesTest.Areas.SpeakingRosesTest.TasksBack.Entities;
+@using SpeakingRosesTest.Areas.SpeakingRosesTest.TasksBack.DTOs;
+@inject TasksRepository tasksRepository;
+
+<!--FOREIGN CALLS (TABLES)-->
+@using SpeakingRosesTest.Areas.SpeakingRosesTest.PriorityBack.Entities;
+@using SpeakingRosesTest.Areas.SpeakingRosesTest.PriorityBack.Repositories;
+@inject PriorityRepository priorityRepository;
+@using SpeakingRosesTest.Areas.SpeakingRosesTest.StatusBack.Entities;
+@using SpeakingRosesTest.Areas.SpeakingRosesTest.StatusBack.Repositories;
+@inject StatusRepository statusRepository;
+
+
+@if (TasksId == 0)
+{
+    <PageTitle>Agregar tasks - SpeakingRosesTest</PageTitle>
+}
+else
+{
+    <PageTitle>Editar tasks - SpeakingRosesTest</PageTitle>
+}
+
+<SpeakingRosesTest.Components.Layout.SideNav lstFoldersAndPages="lstFoldersAndPages"></SpeakingRosesTest.Components.Layout.SideNav>
+
+<div class="main-content position-relative max-height-vh-100 h-100">
+    <SpeakingRosesTest.Components.Layout.NavBarDashboard Pagina="Tasks"></SpeakingRosesTest.Components.Layout.NavBarDashboard>
+    <div class="container-fluid px-2 px-md-4">
+        <div class="page-header min-height-300 border-radius-xl mt-4"
+             style="background-image: url('assets/img/illustrations/Landscape2.jpg');">
+            <span class="mask bg-gradient-primary opacity-6"></span>
+        </div>
+        <div class="card card-body mx-3 mx-md-4 mt-n6">
+            <div class="card-header mb-0 pb-0">
+                <h3 class="mb-3">
+                    @if (TasksId == 0)
+                    {
+                        <span>Agregar tasks</span>
+                    }
+                    else
+                    {
+                        <span>Editar tasks</span>
+                    }
+                </h3>
+                <NavLink class="btn btn-outline-dark" href="SpeakingRosesTest/TasksPage">
+                    <span class="fas fa-chevron-left"></span>
+                    &nbsp;Volver
+                </NavLink>
+                <hr />
+            </div>
+            <div class="card-body px-0">
+                <form method="post" @onsubmit="Submit"
+                      @formname="tasks-form" class="mb-4">
+                    <AntiforgeryToken />
+                    <!--Title-->
+                    <div class="input-group input-group-static mb-5 pb-2">
+                        <label for="title">
+                            Title
+                            @if(ErrorMessageTitle != "")
+                            {
+                            @((MarkupString)ErrorMessageTitle)
+                            }
+                        </label>
+                        <input type="text"
+                               id="title"
+                               class="form-control pt-0"
+                               value="@Tasks!.Title"
+                               @onchange="HandleTitleChange" />
+                    </div>
+                    <!--Description-->
+                    <div class="input-group input-group-static mb-5 pb-2">
+                        <label for="description">
+                            Description
+                            @if (ErrorMessageDescription != "")
+                            {
+                                @((MarkupString)ErrorMessageDescription)
+                            }
+                        </label>
+                        <textarea rows="10"
+                        class="form-control pt-0"
+                        value="@Tasks!.Description"
+                        @onchange="HandleDescriptionChange"
+                        id="description">
+                        </textarea>
+                    </div>
+                    <!--PriorityId-->
+                    <div class="input-group input-group-static">
+                        <label>
+                            PriorityId
+                            @if (ErrorMessagePriorityId != "")
+                            {
+                                @((MarkupString)ErrorMessagePriorityId)
+                            }
+                        </label>
+                        <input type="text"
+                               readonly
+                               class="form-control pt-0"
+                               @bind="PriorityName"/>
+                        <input type="hidden"
+                               id="priorityid"
+                               value="@Tasks!.PriorityId"/>
+                    </div>
+                    <button type="button" 
+                    class="btn btn-dark mb-5 pb-2" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#priorityidmodal">
+                        Seleccionar
+                    </button>
+                    <!-- Modal -->
+                    <div class="modal fade" 
+                        id="priorityidmodal" 
+                        tabindex="-1" 
+                        aria-labelledby="priorityidmodallabel" 
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="priorityidmodallabel">
+                                        Priority
+                                    </h5>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="input-group input-group-dynamic">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-search" aria-hidden="true"></i>
+                                        </span>
+                                        <input class="form-control pt-0"
+                                                @oninput="SearchTextPriorityId"
+                                                type="search">
+                                    </div>
+                                    <br />
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-hover table-bordered mt-4">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>ID</th>
+                                                    <th>Name</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (Priority priority in lstPriority)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            <input type="radio" 
+                                                            id="@priority-priority.PriorityId" 
+                                                            name="priorityid"
+                                                            value="@priority.PriorityId"
+                                                            @onclick="@(() => HandlePriorityIdChange(priority.PriorityId))">
+                                                        </td>
+                                                        <td>
+                                                            @priority.PriorityId
+                                                        </td>
+                                                        <td>
+                                                            @priority.Name
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="modal-footer justify-content-end">
+                                    <button type="button" 
+                                    class="btn btn-dark mb-0" 
+                                    data-bs-dismiss="modal">
+                                        Cerrar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--DueDate-->
+                    <div class="input-group input-group-static mb-5 pb-2">
+                        <label for="duedate">
+                            DueDate
+                            @if (ErrorMessageDueDate != "")
+                            {
+                                @((MarkupString)ErrorMessageDueDate)
+                            }
+                        </label>
+                        <input type="datetime"
+                        id="duedate"
+                        class="form-control pt-0"
+                        value="@Tasks!.DueDate"
+                        @onchange="HandleDueDateChange"/>
+                    </div>
+                    <!--StatusId-->
+                    <div class="input-group input-group-static">
+                        <label>
+                            StatusId
+                            @if (ErrorMessageStatusId != "")
+                            {
+                                @((MarkupString)ErrorMessageStatusId)
+                            }
+                        </label>
+                        <input type="text"
+                               readonly
+                               class="form-control pt-0"
+                               @bind="StatusName"/>
+                        <input type="hidden"
+                               id="statusid"
+                               value="@Tasks!.StatusId"/>
+                    </div>
+                    <button type="button" 
+                    class="btn btn-dark mb-5 pb-2" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#statusidmodal">
+                        Seleccionar
+                    </button>
+                    <!-- Modal -->
+                    <div class="modal fade" 
+                        id="statusidmodal" 
+                        tabindex="-1" 
+                        aria-labelledby="statusidmodallabel" 
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="statusidmodallabel">
+                                        Status
+                                    </h5>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="input-group input-group-dynamic">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-search" aria-hidden="true"></i>
+                                        </span>
+                                        <input class="form-control pt-0"
+                                                @oninput="SearchTextStatusId"
+                                                type="search">
+                                    </div>
+                                    <br />
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-hover table-bordered mt-4">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>ID</th>
+                                                    <th>Name</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (Status status in lstStatus)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            <input type="radio" 
+                                                            id="@status-status.StatusId" 
+                                                            name="statusid"
+                                                            value="@status.StatusId"
+                                                            @onclick="@(() => HandleStatusIdChange(status.StatusId))">
+                                                        </td>
+                                                        <td>
+                                                            @status.StatusId
+                                                        </td>
+                                                        <td>
+                                                            @status.Name
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="modal-footer justify-content-end">
+                                    <button type="button" 
+                                    class="btn btn-dark mb-0" 
+                                    data-bs-dismiss="modal">
+                                        Cerrar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <hr />
+                    @((MarkupString)Message)
+                    <div class="d-flex justify-content-between">
+                        <button id="btn-submit" type="submit"
+                                class="btn btn-success">
+                            <i class="fas fa-pen"></i>
+                            @if (TasksId == 0)
+                            {
+                                <span>Agregar</span>
+                            }
+                            else
+                            {
+                                <span>Editar</span>
+                            }
+                        </button>
+                        <NavLink class="btn btn-outline-dark mx-3" href="SpeakingRosesTest/TasksPage">
+                            <span class="fas fa-chevron-left"></span>
+                            &nbsp;Volver
+                        </NavLink>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+
+    <SpeakingRosesTest.Components.Layout.FixedPlugin></SpeakingRosesTest.Components.Layout.FixedPlugin>
+    <SpeakingRosesTest.Components.Layout.FooterDashboard></SpeakingRosesTest.Components.Layout.FooterDashboard>
+</div>
+
+@code {
+    #region Properties
+    public List<folderForDashboard> lstFoldersAndPages = [];
+
+    public List<Role> lstRole { get; set; } = [];
+
+    [Parameter]
+    public int TasksId { get; set; }
+
+    public string Message { get; set; } = "";
+
+    [SupplyParameterFromForm]
+    public Tasks Tasks { get; set; } = new();
+
+    public User User { get; set; } = new();
+
+    //Error messages for inputs
+    public string ErrorMessageTasksId { get; set; } = "";
+    public string ErrorMessageActive { get; set; } = "";
+    public string ErrorMessageDateTimeCreation { get; set; } = "";
+    public string ErrorMessageDateTimeLastModification { get; set; } = "";
+    public string ErrorMessageUserCreationId { get; set; } = "";
+    public string ErrorMessageUserLastModificationId { get; set; } = "";
+    public string ErrorMessageTitle { get; set; } = "";
+    public string ErrorMessageDescription { get; set; } = "";
+    public string ErrorMessagePriorityId { get; set; } = "";
+    public string ErrorMessageDueDate { get; set; } = "";
+    public string ErrorMessageStatusId { get; set; } = "";
+    
+
+    //Progress bars for uploaders
+    
+    
+    //FOREIGN LISTS (TABLES)
+    public List<Priority> lstPriority { get; set; } = [];
+    public string PriorityName { get; set; } = "";
+    public List<Status> lstStatus { get; set; } = [];
+    public string StatusName { get; set; } = "";
+    
+    #endregion
+
+    protected override void OnInitialized()
+    {
+        try
+        {
+            //Look for saved user in shared component, simulates a session
+            User = StateContainer.User == null ? new() : StateContainer.User;
+
+            lstFoldersAndPages = [];
+            Tasks = new();
+
+            if (User != null)
+            {
+                if (User.UserId != 0)
+                {
+                    //Logged user
+                    List<Menu> lstMenuWithPermission = rolemenuRepository
+                                    .GetAllByRoleIdAndPathForPermission(User.RoleId, "/SpeakingRosesTest/TasksPage");
+
+                    if (lstMenuWithPermission.Count == 0)
+                    {
+                        //Redirect to...
+                        NavigationManager.NavigateTo("403");
+                    }
+
+                    List<Menu> lstMenu = menuRepository
+                                        .GetAll();
+
+                    lstFoldersAndPages = rolemenuRepository
+                                            .GetAllPagesAndFoldersForDashboardByRoleId(User.RoleId);
+
+                    lstRole = roleRepository.GetAll();
+
+                    //FOREIGN LISTS (TABLES)
+                    lstPriority = priorityRepository.GetAllByPriorityIdForModal("");
+                    lstStatus = statusRepository.GetAllByStatusIdForModal("");
+                    
+
+                    if (TasksId == 0)
+                    {
+                        //Create new Tasks
+                        Tasks = new();
+                    }
+                    else
+                    {
+                        //Edit Tasks
+
+                        Tasks = tasksRepository
+                                    .GetByTasksId(TasksId);
+
+                        Priority Priority = priorityRepository.GetByPriorityId(Tasks.PriorityId);
+                        PriorityName = Priority.Name;
+                        Status Status = statusRepository.GetByStatusId(Tasks.StatusId);
+                        StatusName = Status.Name;
+                        
+                    }                    
+                }
+                else
+                {
+                    //Not logged user
+
+                    //Redirect to...
+                    NavigationManager.NavigateTo("Login");
+                }
+            }
+            else
+            {
+                //Impossible
+            }
+
+            base.OnInitialized();
+        }
+        catch (Exception ex)
+        {
+            Failure failure = new()
+                {
+                    Active = true,
+                    DateTimeCreation = DateTime.Now,
+                    DateTimeLastModification = DateTime.Now,
+                    UserCreationId = User.UserId == 0 ? 1 : User.UserId,
+                    UserLastModificationId = User.UserId == 0 ? 1 : User.UserId,
+                    EmergencyLevel = 1,
+                    Comment = "",
+                    Message = ex.Message,
+                    Source = ex.Source,
+                    StackTrace = ex.StackTrace
+                };
+
+            failureRepository.Add(failure);
+
+            Message = $@"<div class=""alert alert-danger text-white font-weight-bold"" role=""alert"">
+                                Hubo un error. Intente nuevamente. Mensaje del error: {ex.Message}
+                            </div>";
+        }
+    }
+
+    private async Task Submit()
+    {
+        try
+        {
+            if (TasksId == 0)
+            {
+                //Create new Tasks
+                Tasks.Active = true;
+                Tasks.UserCreationId = User.UserId;
+                Tasks.UserLastModificationId = User.UserId;
+                Tasks.DateTimeCreation = DateTime.Now;
+                Tasks.DateTimeLastModification = DateTime.Now;
+
+                if(Check("") == null)
+                {
+                    tasksRepository
+                        .Add(Tasks);
+
+                    //Redirect to users page
+                    NavigationManager.NavigateTo("SpeakingRosesTest/TasksPage");
+                }
+
+
+            }
+            else
+            {
+                //Update data
+                Tasks.DateTimeLastModification = DateTime.Now;
+                Tasks.UserLastModificationId = User.UserId;
+
+                if(Check("") == null)
+                {
+                    tasksRepository
+                            .Update(Tasks);
+
+                    //Redirect to users page
+                    NavigationManager.NavigateTo("SpeakingRosesTest/TasksPage");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Failure failure = new()
+                {
+                    Active = true,
+                    DateTimeCreation = DateTime.Now,
+                    DateTimeLastModification = DateTime.Now,
+                    UserCreationId = User.UserId == 0 ? 1 : User.UserId,
+                    UserLastModificationId = User.UserId == 0 ? 1 : User.UserId,
+                    EmergencyLevel = 1,
+                    Comment = "",
+                    Message = ex.Message,
+                    Source = ex.Source,
+                    StackTrace = ex.StackTrace
+                };
+
+            failureRepository.Add(failure);
+
+            Message = $@"<div class=""alert alert-danger text-white font-weight-bold"" role=""alert"">
+                                Hubo un error. Intente nuevamente. Mensaje del error: {ex.Message}
+                            </div>";
+        }
+        finally
+        {
+            //Re-render the page to show ScannedText
+            await InvokeAsync(() => StateHasChanged()).ConfigureAwait(false);
+        }
+    }
+
+    #region Uploaders
+    
+    #endregion    
+
+    #region SEARCHERS FOR FOREIGN TABLES
+    private async Task SearchTextPriorityId(ChangeEventArgs args)
+    {
+        try
+        {
+            //Basic configuration
+            Message = "";
+
+            string TextToSearch = args.Value.ToString();
+
+            lstPriority = priorityRepository.GetAllByPriorityIdForModal(TextToSearch);
+        }
+        catch (Exception ex)
+        {
+            Failure failure = new()
+                {
+                    Active = true,
+                    DateTimeCreation = DateTime.Now,
+                    DateTimeLastModification = DateTime.Now,
+                    UserCreationId = User.UserId == 0 ? 1 : User.UserId,
+                    UserLastModificationId = User.UserId == 0 ? 1 : User.UserId,
+                    EmergencyLevel = 1,
+                    Comment = "",
+                    Message = ex.Message,
+                    Source = ex.Source,
+                    StackTrace = ex.StackTrace
+                };
+
+            failureRepository.Add(failure);
+
+            Message = $@"<div class=""alert alert-danger text-white font-weight-bold"" role=""alert"">
+                                Hubo un error. Intente nuevamente. Mensaje del error: {ex.Message}
+                            </div>";
+        }
+        finally
+        {
+            //Re-render the page
+            await InvokeAsync(() => StateHasChanged()).ConfigureAwait(false);
+        }
+    }
+    private async Task SearchTextStatusId(ChangeEventArgs args)
+    {
+        try
+        {
+            //Basic configuration
+            Message = "";
+
+            string TextToSearch = args.Value.ToString();
+
+            lstStatus = statusRepository.GetAllByStatusIdForModal(TextToSearch);
+        }
+        catch (Exception ex)
+        {
+            Failure failure = new()
+                {
+                    Active = true,
+                    DateTimeCreation = DateTime.Now,
+                    DateTimeLastModification = DateTime.Now,
+                    UserCreationId = User.UserId == 0 ? 1 : User.UserId,
+                    UserLastModificationId = User.UserId == 0 ? 1 : User.UserId,
+                    EmergencyLevel = 1,
+                    Comment = "",
+                    Message = ex.Message,
+                    Source = ex.Source,
+                    StackTrace = ex.StackTrace
+                };
+
+            failureRepository.Add(failure);
+
+            Message = $@"<div class=""alert alert-danger text-white font-weight-bold"" role=""alert"">
+                                Hubo un error. Intente nuevamente. Mensaje del error: {ex.Message}
+                            </div>";
+        }
+        finally
+        {
+            //Re-render the page
+            await InvokeAsync(() => StateHasChanged()).ConfigureAwait(false);
+        }
+    }
+    
+    #endregion
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="attributeToValid">Debe estar encapsulado en []. Ejemplo: [Boolean]</param>
+    /// <returns></returns>
+    private ValidationResult Check(string attributeToValid)
+    {
+        try
+        {
+            List<ValidationResult> lstValidationResult = new List<ValidationResult>();
+            ValidationContext ValidationContext = new ValidationContext(Tasks);
+
+            bool IsValid = Validator.TryValidateObject(Tasks, ValidationContext, lstValidationResult, true);
+
+            ValidationResult ValidationResult = lstValidationResult
+            .AsQueryable()
+            .FirstOrDefault(x => x.ErrorMessage.StartsWith(attributeToValid));
+
+            if (!IsValid)
+            {
+                Message = $@"<div class=""alert alert-danger text-white font-weight-bold"" role=""alert"">
+                                Para guardar correctamente debe completar los siguientes puntos: <br/> <ul>";
+
+                foreach (var validationResult in lstValidationResult)
+                {
+                    validationResult.ErrorMessage = validationResult.ErrorMessage.Substring(validationResult.ErrorMessage.IndexOf(']') + 1);
+                    Message += $@"<li>{validationResult}</li>";
+                }
+
+                Message = Message + "</ul></div>";
+            }
+            else
+            {
+                Message = $@"<div class=""alert alert-successs text-white font-weight-bold"" role=""alert"">
+                                Todos los datos ingresados son correctos
+                            </div>";
+            }
+
+
+            if (ValidationResult != null)
+            {
+                ValidationResult.ErrorMessage = ValidationResult.ErrorMessage.Substring(ValidationResult.ErrorMessage.IndexOf(']') + 1);
+            }
+
+            return ValidationResult;
+        }
+        catch (Exception ex)
+        {
+            Failure failure = new()
+                {
+                    Active = true,
+                    DateTimeCreation = DateTime.Now,
+                    DateTimeLastModification = DateTime.Now,
+                    UserCreationId = User.UserId == 0 ? 1 : User.UserId,
+                    UserLastModificationId = User.UserId == 0 ? 1 : User.UserId,
+                    EmergencyLevel = 1,
+                    Comment = "",
+                    Message = ex.Message,
+                    Source = ex.Source,
+                    StackTrace = ex.StackTrace
+                };
+
+            failureRepository.Add(failure);
+
+            Message = $@"<div class=""alert alert-danger text-white font-weight-bold"" role=""alert"">
+                                Hubo un error. Intente nuevamente. Mensaje del error: {ex.Message}
+                            </div>";
+
+            return null;
+        }
+        finally
+        {
+
+        }
+    }
+
+    #region Handlers
+    private async Task HandleTitleChange(ChangeEventArgs e)
+    {
+        Tasks.Title = e.Value?.ToString();
+        ValidationResult ValidationResult = Check("[Title]");
+
+        if (ValidationResult == null)
+        {
+            ErrorMessageTitle = $@"<span class=""text-success"">
+                <i class=""fas fa-circle-check""></i>
+            </span>";
+        }
+        else
+        {
+            ErrorMessageTitle = $@"<span class=""text-danger"">
+                <i class=""fas fa-circle-xmark""></i>
+                {ValidationResult.ErrorMessage}
+            </span>";
+        }
+
+        await InvokeAsync(() => StateHasChanged()).ConfigureAwait(false);
+    }
+    private async Task HandleDescriptionChange(ChangeEventArgs e)
+    {
+        Tasks.Description = e.Value?.ToString();
+        ValidationResult ValidationResult = Check("[Description]");
+
+        if (ValidationResult == null)
+        {
+            ErrorMessageDescription = $@"<span class=""text-success"">
+                <i class=""fas fa-circle-check""></i>
+            </span>";
+        }
+        else
+        {
+            ErrorMessageDescription = $@"<span class=""text-danger"">
+                <i class=""fas fa-circle-xmark""></i>
+                {ValidationResult.ErrorMessage}
+            </span>";
+        }
+
+        await InvokeAsync(() => StateHasChanged()).ConfigureAwait(false);
+    }
+    private async Task HandlePriorityIdChange(int priorityid)
+    {
+        Tasks.PriorityId = priorityid;
+        ValidationResult ValidationResult = Check("[PriorityId]");
+
+        Priority Priority = priorityRepository.GetByPriorityId(Tasks.PriorityId);
+        PriorityName = Priority.Name;
+
+        if (ValidationResult == null)
+        {
+            ErrorMessagePriorityId = $@"<span class=""text-success"">
+                <i class=""fas fa-circle-check""></i>
+            </span>";
+        }
+        else
+        {
+            ErrorMessagePriorityId = $@"<span class=""text-danger"">
+                <i class=""fas fa-circle-xmark""></i>
+                {ValidationResult.ErrorMessage}
+            </span>";
+        }
+
+        //Re-render the page to show ScannedText
+        await InvokeAsync(() => StateHasChanged()).ConfigureAwait(false);
+    }
+    private async Task HandleDueDateChange(ChangeEventArgs e)
+    {
+        Tasks.DueDate = Convert.ToDateTime(e.Value?.ToString());
+        ValidationResult ValidationResult = Check("[DueDate]");
+
+        if (ValidationResult == null)
+        {
+            ErrorMessageDueDate = $@"<span class=""text-success"">
+                <i class=""fas fa-circle-check""></i>
+            </span>";
+        }
+        else
+        {
+            ErrorMessageDueDate = $@"<span class=""text-danger"">
+                <i class=""fas fa-circle-xmark""></i>
+                {ValidationResult.ErrorMessage}
+            </span>";
+        }
+
+        
+        await InvokeAsync(() => StateHasChanged()).ConfigureAwait(false);
+    }
+    private async Task HandleStatusIdChange(int statusid)
+    {
+        Tasks.StatusId = statusid;
+        ValidationResult ValidationResult = Check("[StatusId]");
+
+        Status Status = statusRepository.GetByStatusId(Tasks.StatusId);
+        StatusName = Status.Name;
+
+        if (ValidationResult == null)
+        {
+            ErrorMessageStatusId = $@"<span class=""text-success"">
+                <i class=""fas fa-circle-check""></i>
+            </span>";
+        }
+        else
+        {
+            ErrorMessageStatusId = $@"<span class=""text-danger"">
+                <i class=""fas fa-circle-xmark""></i>
+                {ValidationResult.ErrorMessage}
+            </span>";
+        }
+
+        //Re-render the page to show ScannedText
+        await InvokeAsync(() => StateHasChanged()).ConfigureAwait(false);
+    }
+    
+    #endregion
+}
+

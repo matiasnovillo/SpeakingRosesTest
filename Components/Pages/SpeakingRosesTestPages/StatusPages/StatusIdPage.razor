@@ -1,0 +1,397 @@
+@page "/SpeakingRosesTest/StatusPage/{StatusId:int}"
+
+@using SpeakingRosesTest.Areas.SpeakingRosesTest.StatusBack.Repositories;
+@using SpeakingRosesTest.Areas.SpeakingRosesTest.StatusBack.Entities;
+@using SpeakingRosesTest.Areas.SpeakingRosesTest.StatusBack.DTOs;
+@inject StatusRepository statusRepository;
+
+<!--FOREIGN CALLS (TABLES)-->
+
+
+@if (StatusId == 0)
+{
+    <PageTitle>Agregar status - SpeakingRosesTest</PageTitle>
+}
+else
+{
+    <PageTitle>Editar status - SpeakingRosesTest</PageTitle>
+}
+
+<SpeakingRosesTest.Components.Layout.SideNav lstFoldersAndPages="lstFoldersAndPages"></SpeakingRosesTest.Components.Layout.SideNav>
+
+<div class="main-content position-relative max-height-vh-100 h-100">
+    <SpeakingRosesTest.Components.Layout.NavBarDashboard Pagina="Status"></SpeakingRosesTest.Components.Layout.NavBarDashboard>
+    <div class="container-fluid px-2 px-md-4">
+        <div class="page-header min-height-300 border-radius-xl mt-4"
+             style="background-image: url('assets/img/illustrations/Landscape2.jpg');">
+            <span class="mask bg-gradient-primary opacity-6"></span>
+        </div>
+        <div class="card card-body mx-3 mx-md-4 mt-n6">
+            <div class="card-header mb-0 pb-0">
+                <h3 class="mb-3">
+                    @if (StatusId == 0)
+                    {
+                        <span>Agregar status</span>
+                    }
+                    else
+                    {
+                        <span>Editar status</span>
+                    }
+                </h3>
+                <NavLink class="btn btn-outline-dark" href="SpeakingRosesTest/StatusPage">
+                    <span class="fas fa-chevron-left"></span>
+                    &nbsp;Volver
+                </NavLink>
+                <hr />
+            </div>
+            <div class="card-body px-0">
+                <form method="post" @onsubmit="Submit"
+                      @formname="status-form" class="mb-4">
+                    <AntiforgeryToken />
+                    <!--Name-->
+                    <div class="input-group input-group-static mb-5 pb-2">
+                        <label for="name">
+                            Name
+                            @if(ErrorMessageName != "")
+                            {
+                            @((MarkupString)ErrorMessageName)
+                            }
+                        </label>
+                        <input type="text"
+                               id="name"
+                               class="form-control pt-0"
+                               value="@Status!.Name"
+                               @onchange="HandleNameChange" />
+                    </div>
+                    
+                    <hr />
+                    @((MarkupString)Message)
+                    <div class="d-flex justify-content-between">
+                        <button id="btn-submit" type="submit"
+                                class="btn btn-success">
+                            <i class="fas fa-pen"></i>
+                            @if (StatusId == 0)
+                            {
+                                <span>Agregar</span>
+                            }
+                            else
+                            {
+                                <span>Editar</span>
+                            }
+                        </button>
+                        <NavLink class="btn btn-outline-dark mx-3" href="SpeakingRosesTest/StatusPage">
+                            <span class="fas fa-chevron-left"></span>
+                            &nbsp;Volver
+                        </NavLink>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+
+    <SpeakingRosesTest.Components.Layout.FixedPlugin></SpeakingRosesTest.Components.Layout.FixedPlugin>
+    <SpeakingRosesTest.Components.Layout.FooterDashboard></SpeakingRosesTest.Components.Layout.FooterDashboard>
+</div>
+
+@code {
+    #region Properties
+    public List<folderForDashboard> lstFoldersAndPages = [];
+
+    public List<Role> lstRole { get; set; } = [];
+
+    [Parameter]
+    public int StatusId { get; set; }
+
+    public string Message { get; set; } = "";
+
+    [SupplyParameterFromForm]
+    public Status Status { get; set; } = new();
+
+    public User User { get; set; } = new();
+
+    //Error messages for inputs
+    public string ErrorMessageStatusId { get; set; } = "";
+    public string ErrorMessageActive { get; set; } = "";
+    public string ErrorMessageDateTimeCreation { get; set; } = "";
+    public string ErrorMessageDateTimeLastModification { get; set; } = "";
+    public string ErrorMessageUserCreationId { get; set; } = "";
+    public string ErrorMessageUserLastModificationId { get; set; } = "";
+    public string ErrorMessageName { get; set; } = "";
+    
+
+    //Progress bars for uploaders
+    
+    
+    //FOREIGN LISTS (TABLES)
+    
+    #endregion
+
+    protected override void OnInitialized()
+    {
+        try
+        {
+            //Look for saved user in shared component, simulates a session
+            User = StateContainer.User == null ? new() : StateContainer.User;
+
+            lstFoldersAndPages = [];
+            Status = new();
+
+            if (User != null)
+            {
+                if (User.UserId != 0)
+                {
+                    //Logged user
+                    List<Menu> lstMenuWithPermission = rolemenuRepository
+                                    .GetAllByRoleIdAndPathForPermission(User.RoleId, "/SpeakingRosesTest/StatusPage");
+
+                    if (lstMenuWithPermission.Count == 0)
+                    {
+                        //Redirect to...
+                        NavigationManager.NavigateTo("403");
+                    }
+
+                    List<Menu> lstMenu = menuRepository
+                                        .GetAll();
+
+                    lstFoldersAndPages = rolemenuRepository
+                                            .GetAllPagesAndFoldersForDashboardByRoleId(User.RoleId);
+
+                    lstRole = roleRepository.GetAll();
+
+                    //FOREIGN LISTS (TABLES)
+                    
+
+                    if (StatusId == 0)
+                    {
+                        //Create new Status
+                        Status = new();
+                    }
+                    else
+                    {
+                        //Edit Status
+
+                        Status = statusRepository
+                                    .GetByStatusId(StatusId);
+
+                        
+                    }                    
+                }
+                else
+                {
+                    //Not logged user
+
+                    //Redirect to...
+                    NavigationManager.NavigateTo("Login");
+                }
+            }
+            else
+            {
+                //Impossible
+            }
+
+            base.OnInitialized();
+        }
+        catch (Exception ex)
+        {
+            Failure failure = new()
+                {
+                    Active = true,
+                    DateTimeCreation = DateTime.Now,
+                    DateTimeLastModification = DateTime.Now,
+                    UserCreationId = User.UserId == 0 ? 1 : User.UserId,
+                    UserLastModificationId = User.UserId == 0 ? 1 : User.UserId,
+                    EmergencyLevel = 1,
+                    Comment = "",
+                    Message = ex.Message,
+                    Source = ex.Source,
+                    StackTrace = ex.StackTrace
+                };
+
+            failureRepository.Add(failure);
+
+            Message = $@"<div class=""alert alert-danger text-white font-weight-bold"" role=""alert"">
+                                Hubo un error. Intente nuevamente. Mensaje del error: {ex.Message}
+                            </div>";
+        }
+    }
+
+    private async Task Submit()
+    {
+        try
+        {
+            if (StatusId == 0)
+            {
+                //Create new Status
+                Status.Active = true;
+                Status.UserCreationId = User.UserId;
+                Status.UserLastModificationId = User.UserId;
+                Status.DateTimeCreation = DateTime.Now;
+                Status.DateTimeLastModification = DateTime.Now;
+
+                if(Check("") == null)
+                {
+                    statusRepository
+                        .Add(Status);
+
+                    //Redirect to users page
+                    NavigationManager.NavigateTo("SpeakingRosesTest/StatusPage");
+                }
+
+
+            }
+            else
+            {
+                //Update data
+                Status.DateTimeLastModification = DateTime.Now;
+                Status.UserLastModificationId = User.UserId;
+
+                if(Check("") == null)
+                {
+                    statusRepository
+                            .Update(Status);
+
+                    //Redirect to users page
+                    NavigationManager.NavigateTo("SpeakingRosesTest/StatusPage");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Failure failure = new()
+                {
+                    Active = true,
+                    DateTimeCreation = DateTime.Now,
+                    DateTimeLastModification = DateTime.Now,
+                    UserCreationId = User.UserId == 0 ? 1 : User.UserId,
+                    UserLastModificationId = User.UserId == 0 ? 1 : User.UserId,
+                    EmergencyLevel = 1,
+                    Comment = "",
+                    Message = ex.Message,
+                    Source = ex.Source,
+                    StackTrace = ex.StackTrace
+                };
+
+            failureRepository.Add(failure);
+
+            Message = $@"<div class=""alert alert-danger text-white font-weight-bold"" role=""alert"">
+                                Hubo un error. Intente nuevamente. Mensaje del error: {ex.Message}
+                            </div>";
+        }
+        finally
+        {
+            //Re-render the page to show ScannedText
+            await InvokeAsync(() => StateHasChanged()).ConfigureAwait(false);
+        }
+    }
+
+    #region Uploaders
+    
+    #endregion    
+
+    #region SEARCHERS FOR FOREIGN TABLES
+    
+    #endregion
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="attributeToValid">Debe estar encapsulado en []. Ejemplo: [Boolean]</param>
+    /// <returns></returns>
+    private ValidationResult Check(string attributeToValid)
+    {
+        try
+        {
+            List<ValidationResult> lstValidationResult = new List<ValidationResult>();
+            ValidationContext ValidationContext = new ValidationContext(Status);
+
+            bool IsValid = Validator.TryValidateObject(Status, ValidationContext, lstValidationResult, true);
+
+            ValidationResult ValidationResult = lstValidationResult
+            .AsQueryable()
+            .FirstOrDefault(x => x.ErrorMessage.StartsWith(attributeToValid));
+
+            if (!IsValid)
+            {
+                Message = $@"<div class=""alert alert-danger text-white font-weight-bold"" role=""alert"">
+                                Para guardar correctamente debe completar los siguientes puntos: <br/> <ul>";
+
+                foreach (var validationResult in lstValidationResult)
+                {
+                    validationResult.ErrorMessage = validationResult.ErrorMessage.Substring(validationResult.ErrorMessage.IndexOf(']') + 1);
+                    Message += $@"<li>{validationResult}</li>";
+                }
+
+                Message = Message + "</ul></div>";
+            }
+            else
+            {
+                Message = $@"<div class=""alert alert-successs text-white font-weight-bold"" role=""alert"">
+                                Todos los datos ingresados son correctos
+                            </div>";
+            }
+
+
+            if (ValidationResult != null)
+            {
+                ValidationResult.ErrorMessage = ValidationResult.ErrorMessage.Substring(ValidationResult.ErrorMessage.IndexOf(']') + 1);
+            }
+
+            return ValidationResult;
+        }
+        catch (Exception ex)
+        {
+            Failure failure = new()
+                {
+                    Active = true,
+                    DateTimeCreation = DateTime.Now,
+                    DateTimeLastModification = DateTime.Now,
+                    UserCreationId = User.UserId == 0 ? 1 : User.UserId,
+                    UserLastModificationId = User.UserId == 0 ? 1 : User.UserId,
+                    EmergencyLevel = 1,
+                    Comment = "",
+                    Message = ex.Message,
+                    Source = ex.Source,
+                    StackTrace = ex.StackTrace
+                };
+
+            failureRepository.Add(failure);
+
+            Message = $@"<div class=""alert alert-danger text-white font-weight-bold"" role=""alert"">
+                                Hubo un error. Intente nuevamente. Mensaje del error: {ex.Message}
+                            </div>";
+
+            return null;
+        }
+        finally
+        {
+
+        }
+    }
+
+    #region Handlers
+    private async Task HandleNameChange(ChangeEventArgs e)
+    {
+        Status.Name = e.Value?.ToString();
+        ValidationResult ValidationResult = Check("[Name]");
+
+        if (ValidationResult == null)
+        {
+            ErrorMessageName = $@"<span class=""text-success"">
+                <i class=""fas fa-circle-check""></i>
+            </span>";
+        }
+        else
+        {
+            ErrorMessageName = $@"<span class=""text-danger"">
+                <i class=""fas fa-circle-xmark""></i>
+                {ValidationResult.ErrorMessage}
+            </span>";
+        }
+
+        await InvokeAsync(() => StateHasChanged()).ConfigureAwait(false);
+    }
+    
+    #endregion
+}
+
