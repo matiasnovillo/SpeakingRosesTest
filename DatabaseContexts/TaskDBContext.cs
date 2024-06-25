@@ -1,15 +1,5 @@
-﻿using SpeakingRosesTest.Areas.CMS.MenuBack.Entities;
-using SpeakingRosesTest.Areas.CMS.MenuBack.EntitiesConfiguration;
-using SpeakingRosesTest.Areas.CMS.RoleBack.Entities;
-using SpeakingRosesTest.Areas.CMS.RoleBack.EntitiesConfiguration;
-using SpeakingRosesTest.Areas.CMS.RoleMenuBack.Entities;
-using SpeakingRosesTest.Areas.CMS.RoleMenuBack.EntitiesConfiguration;
-using SpeakingRosesTest.Areas.CMS.UserBack.Entities;
-using SpeakingRosesTest.Areas.CMS.UserBack.EntitiesConfiguration;
-using SpeakingRosesTest.Areas.System.FailureBack.Entities;
+﻿using SpeakingRosesTest.Areas.System.FailureBack.Entities;
 using SpeakingRosesTest.Areas.System.FailureBack.EntitiesConfiguration;
-using SpeakingRosesTest.Areas.System.ParameterBack.Entities;
-using SpeakingRosesTest.Areas.System.ParameterBack.EntitiesConfiguration;
 using Microsoft.EntityFrameworkCore;
 using SpeakingRosesTest.Areas.SpeakingRosesTest.TasksBack.Entities;
 using SpeakingRosesTest.Areas.SpeakingRosesTest.PriorityBack.Entities;
@@ -24,12 +14,7 @@ namespace SpeakingRosesTest.DatabaseContexts
     {
         protected IConfiguration _configuration { get; }
 
-        public DbSet<User> User { get; set; }
-        public DbSet<Role> Role { get; set; }
-        public DbSet<Menu> Menu { get; set; }
-        public DbSet<RoleMenu> RoleMenu { get; set; }
         public DbSet<Failure> Failure { get; set; }
-        public DbSet<Parameter> Parameter { get; set; }
 
         //SpeakingRosesTest
         public DbSet<Tasks> Tasks { get; set; }
@@ -48,7 +33,7 @@ namespace SpeakingRosesTest.DatabaseContexts
                 string ConnectionString = "";
 #if DEBUG
                 ConnectionString = "data source =.; " +
-                    "initial catalog = SpeakingRosesTest; " +
+                    "initial catalog = TaskDB; " +
                     "Integrated Security = SSPI;" +
                     " MultipleActiveResultSets=True;" +
                     "Pooling=false;" +
@@ -74,18 +59,8 @@ namespace SpeakingRosesTest.DatabaseContexts
         {
             try
             {
-                modelBuilder.ApplyConfiguration(new UserConfiguration());
-                modelBuilder.Entity<User>().ToTable("CMS.User");
-                modelBuilder.ApplyConfiguration(new RoleConfiguration());
-                modelBuilder.Entity<Role>().ToTable("CMS.Role");
-                modelBuilder.ApplyConfiguration(new MenuConfiguration());
-                modelBuilder.Entity<Menu>().ToTable("CMS.Menu");
-                modelBuilder.ApplyConfiguration(new RoleMenuConfiguration());
-                modelBuilder.Entity<RoleMenu>().ToTable("CMS.RoleMenu");
                 modelBuilder.ApplyConfiguration(new FailureConfiguration());
                 modelBuilder.Entity<Failure>().ToTable("System.Failure");
-                modelBuilder.ApplyConfiguration(new ParameterConfiguration());
-                modelBuilder.Entity<Parameter>().ToTable("System.Parameter");
 
                 //SpeakingRosesTest
                 modelBuilder.ApplyConfiguration(new TasksConfiguration());

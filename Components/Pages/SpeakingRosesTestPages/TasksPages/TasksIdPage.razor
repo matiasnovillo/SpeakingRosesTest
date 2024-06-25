@@ -16,14 +16,14 @@
 
 @if (TasksId == 0)
 {
-    <PageTitle>Agregar tasks - SpeakingRosesTest</PageTitle>
+    <PageTitle>Add task - Speaking Roses Test</PageTitle>
 }
 else
 {
-    <PageTitle>Editar tasks - SpeakingRosesTest</PageTitle>
+    <PageTitle>Edit task - Speaking Roses Test</PageTitle>
 }
 
-<SpeakingRosesTest.Components.Layout.SideNav lstFoldersAndPages="lstFoldersAndPages"></SpeakingRosesTest.Components.Layout.SideNav>
+<SpeakingRosesTest.Components.Layout.SideNav></SpeakingRosesTest.Components.Layout.SideNav>
 
 <div class="main-content position-relative max-height-vh-100 h-100">
     <SpeakingRosesTest.Components.Layout.NavBarDashboard Pagina="Tasks"></SpeakingRosesTest.Components.Layout.NavBarDashboard>
@@ -37,11 +37,11 @@ else
                 <h3 class="mb-3">
                     @if (TasksId == 0)
                     {
-                        <span>Agregar tasks</span>
+                        <span>Add task</span>
                     }
                     else
                     {
-                        <span>Editar tasks</span>
+                        <span>Edit task</span>
                     }
                 </h3>
                 <NavLink class="btn btn-outline-dark" href="SpeakingRosesTest/TasksPage">
@@ -54,20 +54,41 @@ else
                 <form method="post" @onsubmit="Submit"
                       @formname="tasks-form" class="mb-4">
                     <AntiforgeryToken />
-                    <!--Title-->
-                    <div class="input-group input-group-static mb-5 pb-2">
-                        <label for="title">
-                            Title
-                            @if(ErrorMessageTitle != "")
-                            {
-                            @((MarkupString)ErrorMessageTitle)
-                            }
-                        </label>
-                        <input type="text"
-                               id="title"
-                               class="form-control pt-0"
-                               value="@Tasks!.Title"
-                               @onchange="HandleTitleChange" />
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <!--Title-->
+                            <div class="input-group input-group-static mb-5 pb-2">
+                                <label for="title">
+                                    Title
+                                    @if (ErrorMessageTitle != "")
+                                    {
+                                        @((MarkupString)ErrorMessageTitle)
+                                    }
+                                </label>
+                                <input type="text"
+                                       id="title"
+                                       class="form-control pt-0"
+                                       value="@Tasks!.Title"
+                                       @onchange="HandleTitleChange" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <!--DueDate-->
+                            <div class="input-group input-group-static mb-5 pb-2">
+                                <label for="duedate">
+                                    Due date
+                                    @if (ErrorMessageDueDate != "")
+                                    {
+                                        @((MarkupString)ErrorMessageDueDate)
+                                    }
+                                </label>
+                                <input type="datetime"
+                                       id="duedate"
+                                       class="form-control pt-0"
+                                       value="@Tasks!.DueDate"
+                                       @onchange="HandleDueDateChange" />
+                            </div>
+                        </div>
                     </div>
                     <!--Description-->
                     <div class="input-group input-group-static mb-5 pb-2">
@@ -85,198 +106,188 @@ else
                         id="description">
                         </textarea>
                     </div>
-                    <!--PriorityId-->
-                    <div class="input-group input-group-static">
-                        <label>
-                            PriorityId
-                            @if (ErrorMessagePriorityId != "")
-                            {
-                                @((MarkupString)ErrorMessagePriorityId)
-                            }
-                        </label>
-                        <input type="text"
-                               readonly
-                               class="form-control pt-0"
-                               @bind="PriorityName"/>
-                        <input type="hidden"
-                               id="priorityid"
-                               value="@Tasks!.PriorityId"/>
-                    </div>
-                    <button type="button" 
-                    class="btn btn-dark mb-5 pb-2" 
-                    data-bs-toggle="modal" 
-                    data-bs-target="#priorityidmodal">
-                        Seleccionar
-                    </button>
-                    <!-- Modal -->
-                    <div class="modal fade" 
-                        id="priorityidmodal" 
-                        tabindex="-1" 
-                        aria-labelledby="priorityidmodallabel" 
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="priorityidmodallabel">
-                                        Priority
-                                    </h5>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="input-group input-group-dynamic">
-                                        <span class="input-group-text">
-                                            <i class="fas fa-search" aria-hidden="true"></i>
-                                        </span>
-                                        <input class="form-control pt-0"
-                                                @oninput="SearchTextPriorityId"
-                                                type="search">
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <!--PriorityId-->
+                            <div class="input-group input-group-static">
+                                <label>
+                                    Priority
+                                    @if (ErrorMessagePriorityId != "")
+                                    {
+                                        @((MarkupString)ErrorMessagePriorityId)
+                                    }
+                                </label>
+                                <input type="text"
+                                       readonly
+                                       class="form-control pt-0"
+                                       @bind="PriorityName" />
+                                <input type="hidden"
+                                       id="priorityid"
+                                       value="@Tasks!.PriorityId" />
+                            </div>
+                            <button type="button"
+                                    class="btn btn-dark mb-5 pb-2"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#priorityidmodal">
+                                Select
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade"
+                                 id="priorityidmodal"
+                                 tabindex="-1"
+                                 aria-labelledby="priorityidmodallabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="priorityidmodallabel">
+                                                Priority
+                                            </h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="input-group input-group-dynamic">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-search" aria-hidden="true"></i>
+                                                </span>
+                                                <input class="form-control pt-0"
+                                                       @oninput="SearchTextPriorityId"
+                                                       type="search">
+                                            </div>
+                                            <br />
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-hover table-bordered mt-4">
+                                                    <thead>
+                                                        <tr>
+                                                            <th></th>
+                                                            <th>ID</th>
+                                                            <th>Name</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (Priority priority in lstPriority)
+                                                        {
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="radio"
+                                                                           id="@priority-priority.PriorityId"
+                                                                           name="priorityid"
+                                                                           value="@priority.PriorityId"
+                                                                           @onclick="@(() => HandlePriorityIdChange(priority.PriorityId))">
+                                                                </td>
+                                                                <td>
+                                                                    @priority.PriorityId
+                                                                </td>
+                                                                <td>
+                                                                    @priority.Name
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer justify-content-end">
+                                            <button type="button"
+                                                    class="btn btn-dark mb-0"
+                                                    data-bs-dismiss="modal">
+                                                Cerrar
+                                            </button>
+                                        </div>
                                     </div>
-                                    <br />
-                                    <div class="table-responsive">
-                                        <table class="table table-striped table-hover table-bordered mt-4">
-                                            <thead>
-                                                <tr>
-                                                    <th></th>
-                                                    <th>ID</th>
-                                                    <th>Name</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach (Priority priority in lstPriority)
-                                                {
-                                                    <tr>
-                                                        <td>
-                                                            <input type="radio" 
-                                                            id="@priority-priority.PriorityId" 
-                                                            name="priorityid"
-                                                            value="@priority.PriorityId"
-                                                            @onclick="@(() => HandlePriorityIdChange(priority.PriorityId))">
-                                                        </td>
-                                                        <td>
-                                                            @priority.PriorityId
-                                                        </td>
-                                                        <td>
-                                                            @priority.Name
-                                                        </td>
-                                                    </tr>
-                                                }
-                                            </tbody>
-                                        </table>
-                                    </div>
                                 </div>
-                                <div class="modal-footer justify-content-end">
-                                    <button type="button" 
-                                    class="btn btn-dark mb-0" 
-                                    data-bs-dismiss="modal">
-                                        Cerrar
-                                    </button>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <!--StatusId-->
+                            <div class="input-group input-group-static">
+                                <label>
+                                    Status
+                                    @if (ErrorMessageStatusId != "")
+                                    {
+                                        @((MarkupString)ErrorMessageStatusId)
+                                    }
+                                </label>
+                                <input type="text"
+                                       readonly
+                                       class="form-control pt-0"
+                                       @bind="StatusName" />
+                                <input type="hidden"
+                                       id="statusid"
+                                       value="@Tasks!.StatusId" />
+                            </div>
+                            <button type="button"
+                                    class="btn btn-dark mb-5 pb-2"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#statusidmodal">
+                                Select
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade"
+                                 id="statusidmodal"
+                                 tabindex="-1"
+                                 aria-labelledby="statusidmodallabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="statusidmodallabel">
+                                                Status
+                                            </h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="input-group input-group-dynamic">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-search" aria-hidden="true"></i>
+                                                </span>
+                                                <input class="form-control pt-0"
+                                                       @oninput="SearchTextStatusId"
+                                                       type="search">
+                                            </div>
+                                            <br />
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-hover table-bordered mt-4">
+                                                    <thead>
+                                                        <tr>
+                                                            <th></th>
+                                                            <th>ID</th>
+                                                            <th>Name</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (Status status in lstStatus)
+                                                        {
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="radio"
+                                                                           id="@status-status.StatusId"
+                                                                           name="statusid"
+                                                                           value="@status.StatusId"
+                                                                           @onclick="@(() => HandleStatusIdChange(status.StatusId))">
+                                                                </td>
+                                                                <td>
+                                                                    @status.StatusId
+                                                                </td>
+                                                                <td>
+                                                                    @status.Name
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer justify-content-end">
+                                            <button type="button"
+                                                    class="btn btn-dark mb-0"
+                                                    data-bs-dismiss="modal">
+                                                Cerrar
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!--DueDate-->
-                    <div class="input-group input-group-static mb-5 pb-2">
-                        <label for="duedate">
-                            DueDate
-                            @if (ErrorMessageDueDate != "")
-                            {
-                                @((MarkupString)ErrorMessageDueDate)
-                            }
-                        </label>
-                        <input type="datetime"
-                        id="duedate"
-                        class="form-control pt-0"
-                        value="@Tasks!.DueDate"
-                        @onchange="HandleDueDateChange"/>
-                    </div>
-                    <!--StatusId-->
-                    <div class="input-group input-group-static">
-                        <label>
-                            StatusId
-                            @if (ErrorMessageStatusId != "")
-                            {
-                                @((MarkupString)ErrorMessageStatusId)
-                            }
-                        </label>
-                        <input type="text"
-                               readonly
-                               class="form-control pt-0"
-                               @bind="StatusName"/>
-                        <input type="hidden"
-                               id="statusid"
-                               value="@Tasks!.StatusId"/>
-                    </div>
-                    <button type="button" 
-                    class="btn btn-dark mb-5 pb-2" 
-                    data-bs-toggle="modal" 
-                    data-bs-target="#statusidmodal">
-                        Seleccionar
-                    </button>
-                    <!-- Modal -->
-                    <div class="modal fade" 
-                        id="statusidmodal" 
-                        tabindex="-1" 
-                        aria-labelledby="statusidmodallabel" 
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="statusidmodallabel">
-                                        Status
-                                    </h5>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="input-group input-group-dynamic">
-                                        <span class="input-group-text">
-                                            <i class="fas fa-search" aria-hidden="true"></i>
-                                        </span>
-                                        <input class="form-control pt-0"
-                                                @oninput="SearchTextStatusId"
-                                                type="search">
-                                    </div>
-                                    <br />
-                                    <div class="table-responsive">
-                                        <table class="table table-striped table-hover table-bordered mt-4">
-                                            <thead>
-                                                <tr>
-                                                    <th></th>
-                                                    <th>ID</th>
-                                                    <th>Name</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach (Status status in lstStatus)
-                                                {
-                                                    <tr>
-                                                        <td>
-                                                            <input type="radio" 
-                                                            id="@status-status.StatusId" 
-                                                            name="statusid"
-                                                            value="@status.StatusId"
-                                                            @onclick="@(() => HandleStatusIdChange(status.StatusId))">
-                                                        </td>
-                                                        <td>
-                                                            @status.StatusId
-                                                        </td>
-                                                        <td>
-                                                            @status.Name
-                                                        </td>
-                                                    </tr>
-                                                }
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div class="modal-footer justify-content-end">
-                                    <button type="button" 
-                                    class="btn btn-dark mb-0" 
-                                    data-bs-dismiss="modal">
-                                        Cerrar
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
                     <hr />
                     @((MarkupString)Message)
                     <div class="d-flex justify-content-between">
@@ -285,11 +296,11 @@ else
                             <i class="fas fa-pen"></i>
                             @if (TasksId == 0)
                             {
-                                <span>Agregar</span>
+                                <span>Add</span>
                             }
                             else
                             {
-                                <span>Editar</span>
+                                <span>Edit</span>
                             }
                         </button>
                         <NavLink class="btn btn-outline-dark mx-3" href="SpeakingRosesTest/TasksPage">
@@ -309,10 +320,6 @@ else
 
 @code {
     #region Properties
-    public List<folderForDashboard> lstFoldersAndPages = [];
-
-    public List<Role> lstRole { get; set; } = [];
-
     [Parameter]
     public int TasksId { get; set; }
 
@@ -320,8 +327,6 @@ else
 
     [SupplyParameterFromForm]
     public Tasks Tasks { get; set; } = new();
-
-    public User User { get; set; } = new();
 
     //Error messages for inputs
     public string ErrorMessageTasksId { get; set; } = "";
@@ -352,69 +357,30 @@ else
     {
         try
         {
-            //Look for saved user in shared component, simulates a session
-            User = StateContainer.User == null ? new() : StateContainer.User;
-
-            lstFoldersAndPages = [];
             Tasks = new();
 
-            if (User != null)
+            //FOREIGN LISTS (TABLES)
+            lstPriority = priorityRepository.GetAllByPriorityIdForModal("");
+            lstStatus = statusRepository.GetAllByStatusIdForModal("");
+
+
+            if (TasksId == 0)
             {
-                if (User.UserId != 0)
-                {
-                    //Logged user
-                    List<Menu> lstMenuWithPermission = rolemenuRepository
-                                    .GetAllByRoleIdAndPathForPermission(User.RoleId, "/SpeakingRosesTest/TasksPage");
-
-                    if (lstMenuWithPermission.Count == 0)
-                    {
-                        //Redirect to...
-                        NavigationManager.NavigateTo("403");
-                    }
-
-                    List<Menu> lstMenu = menuRepository
-                                        .GetAll();
-
-                    lstFoldersAndPages = rolemenuRepository
-                                            .GetAllPagesAndFoldersForDashboardByRoleId(User.RoleId);
-
-                    lstRole = roleRepository.GetAll();
-
-                    //FOREIGN LISTS (TABLES)
-                    lstPriority = priorityRepository.GetAllByPriorityIdForModal("");
-                    lstStatus = statusRepository.GetAllByStatusIdForModal("");
-                    
-
-                    if (TasksId == 0)
-                    {
-                        //Create new Tasks
-                        Tasks = new();
-                    }
-                    else
-                    {
-                        //Edit Tasks
-
-                        Tasks = tasksRepository
-                                    .GetByTasksId(TasksId);
-
-                        Priority Priority = priorityRepository.GetByPriorityId(Tasks.PriorityId);
-                        PriorityName = Priority.Name;
-                        Status Status = statusRepository.GetByStatusId(Tasks.StatusId);
-                        StatusName = Status.Name;
-                        
-                    }                    
-                }
-                else
-                {
-                    //Not logged user
-
-                    //Redirect to...
-                    NavigationManager.NavigateTo("Login");
-                }
+                //Create new Tasks
+                Tasks = new();
             }
             else
             {
-                //Impossible
+                //Edit Tasks
+
+                Tasks = tasksRepository
+                            .GetByTasksId(TasksId);
+
+                Priority Priority = priorityRepository.GetByPriorityId(Tasks.PriorityId);
+                PriorityName = Priority.Name;
+                Status Status = statusRepository.GetByStatusId(Tasks.StatusId);
+                StatusName = Status.Name;
+
             }
 
             base.OnInitialized();
@@ -426,8 +392,8 @@ else
                     Active = true,
                     DateTimeCreation = DateTime.Now,
                     DateTimeLastModification = DateTime.Now,
-                    UserCreationId = User.UserId == 0 ? 1 : User.UserId,
-                    UserLastModificationId = User.UserId == 0 ? 1 : User.UserId,
+                    UserCreationId = 1,
+                    UserLastModificationId = 1,
                     EmergencyLevel = 1,
                     Comment = "",
                     Message = ex.Message,
@@ -438,7 +404,7 @@ else
             failureRepository.Add(failure);
 
             Message = $@"<div class=""alert alert-danger text-white font-weight-bold"" role=""alert"">
-                                Hubo un error. Intente nuevamente. Mensaje del error: {ex.Message}
+                                There was an error. Please, try again. Error message: {ex.Message}
                             </div>";
         }
     }
@@ -451,8 +417,8 @@ else
             {
                 //Create new Tasks
                 Tasks.Active = true;
-                Tasks.UserCreationId = User.UserId;
-                Tasks.UserLastModificationId = User.UserId;
+                Tasks.UserCreationId = 1;
+                Tasks.UserLastModificationId = 1;
                 Tasks.DateTimeCreation = DateTime.Now;
                 Tasks.DateTimeLastModification = DateTime.Now;
 
@@ -471,7 +437,7 @@ else
             {
                 //Update data
                 Tasks.DateTimeLastModification = DateTime.Now;
-                Tasks.UserLastModificationId = User.UserId;
+                Tasks.UserLastModificationId = 1;
 
                 if(Check("") == null)
                 {
@@ -490,8 +456,8 @@ else
                     Active = true,
                     DateTimeCreation = DateTime.Now,
                     DateTimeLastModification = DateTime.Now,
-                    UserCreationId = User.UserId == 0 ? 1 : User.UserId,
-                    UserLastModificationId = User.UserId == 0 ? 1 : User.UserId,
+                    UserCreationId = 1,
+                    UserLastModificationId = 1,
                     EmergencyLevel = 1,
                     Comment = "",
                     Message = ex.Message,
@@ -502,7 +468,7 @@ else
             failureRepository.Add(failure);
 
             Message = $@"<div class=""alert alert-danger text-white font-weight-bold"" role=""alert"">
-                                Hubo un error. Intente nuevamente. Mensaje del error: {ex.Message}
+                                There was an error. Please, try again. Error message: {ex.Message}
                             </div>";
         }
         finally
@@ -535,8 +501,8 @@ else
                     Active = true,
                     DateTimeCreation = DateTime.Now,
                     DateTimeLastModification = DateTime.Now,
-                    UserCreationId = User.UserId == 0 ? 1 : User.UserId,
-                    UserLastModificationId = User.UserId == 0 ? 1 : User.UserId,
+                    UserCreationId = 1,
+                    UserLastModificationId = 1,
                     EmergencyLevel = 1,
                     Comment = "",
                     Message = ex.Message,
@@ -547,7 +513,7 @@ else
             failureRepository.Add(failure);
 
             Message = $@"<div class=""alert alert-danger text-white font-weight-bold"" role=""alert"">
-                                Hubo un error. Intente nuevamente. Mensaje del error: {ex.Message}
+                                There was an error. Please, try again. Error message: {ex.Message}
                             </div>";
         }
         finally
@@ -574,8 +540,8 @@ else
                     Active = true,
                     DateTimeCreation = DateTime.Now,
                     DateTimeLastModification = DateTime.Now,
-                    UserCreationId = User.UserId == 0 ? 1 : User.UserId,
-                    UserLastModificationId = User.UserId == 0 ? 1 : User.UserId,
+                    UserCreationId = 1,
+                    UserLastModificationId = 1,
                     EmergencyLevel = 1,
                     Comment = "",
                     Message = ex.Message,
@@ -586,7 +552,7 @@ else
             failureRepository.Add(failure);
 
             Message = $@"<div class=""alert alert-danger text-white font-weight-bold"" role=""alert"">
-                                Hubo un error. Intente nuevamente. Mensaje del error: {ex.Message}
+                                There was an error. Please, try again. Error message: {ex.Message}
                             </div>";
         }
         finally
@@ -651,8 +617,8 @@ else
                     Active = true,
                     DateTimeCreation = DateTime.Now,
                     DateTimeLastModification = DateTime.Now,
-                    UserCreationId = User.UserId == 0 ? 1 : User.UserId,
-                    UserLastModificationId = User.UserId == 0 ? 1 : User.UserId,
+                    UserCreationId = 1,
+                    UserLastModificationId = 1,
                     EmergencyLevel = 1,
                     Comment = "",
                     Message = ex.Message,
@@ -663,7 +629,7 @@ else
             failureRepository.Add(failure);
 
             Message = $@"<div class=""alert alert-danger text-white font-weight-bold"" role=""alert"">
-                                Hubo un error. Intente nuevamente. Mensaje del error: {ex.Message}
+                                There was an error. Please, try again. Error message: {ex.Message}
                             </div>";
 
             return null;

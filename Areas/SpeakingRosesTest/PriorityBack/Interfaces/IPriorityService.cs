@@ -22,6 +22,6 @@ namespace SpeakingRosesTest.Areas.SpeakingRosesTest.PriorityBack.Interfaces
 
         void ExportToPDF(string path, List<Priority> lstPriority);
 
-        List<Priority> ImportExcel(string path, int userId);
+        List<Priority> ImportExcel(string path);
     }
 }

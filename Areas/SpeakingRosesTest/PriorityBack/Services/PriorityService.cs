@@ -250,7 +250,7 @@ namespace SpeakingRosesTest.Areas.SpeakingRosesTest.PriorityBack.Services
         #endregion
 
         #region Importations
-        public List<Priority> ImportExcel(string path, int userId)
+        public List<Priority> ImportExcel(string path)
         {
             List<Priority> lstPriority = [];
 
@@ -272,8 +272,8 @@ namespace SpeakingRosesTest.Areas.SpeakingRosesTest.PriorityBack.Services
                         Active = true,
                         DateTimeCreation = DateTime.Now,
                         DateTimeLastModification = DateTime.Now,
-                        UserCreationId = userId,
-                        UserLastModificationId = userId,
+                        UserCreationId = 1,
+                        UserLastModificationId = 1,
                         Name = Name,
                         
                     };

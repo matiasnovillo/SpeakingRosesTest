@@ -7,9 +7,9 @@
 @inject StatusRepository statusRepository;
 @inject StatusService statusService;
 
-<PageTitle>Buscar Status - SpeakingRosesTest</PageTitle>
+<PageTitle>Search status - Speaking Roses Test</PageTitle>
 
-<SpeakingRosesTest.Components.Layout.SideNav lstFoldersAndPages="lstFoldersAndPages"></SpeakingRosesTest.Components.Layout.SideNav>
+<SpeakingRosesTest.Components.Layout.SideNav></SpeakingRosesTest.Components.Layout.SideNav>
 
 <div class="main-content position-relative max-height-vh-100 h-100">
     <SpeakingRosesTest.Components.Layout.NavBarDashboard Pagina="Status"></SpeakingRosesTest.Components.Layout.NavBarDashboard>
@@ -22,15 +22,15 @@
             <!--CARD HEADER-->
             <div class="card-header mb-0 pb-0">
                 <h3 class="mb-3">
-                    Buscar status
+                    Search status
                 </h3>
                 <NavLink class="btn btn-outline-dark" href="Dashboard">
                     <span class="fas fa-chevron-left" aria-hidden="true"></span>
-                    &nbsp;Volver
+                    &nbsp;Go back
                 </NavLink>
                 <NavLink class="btn btn-success text-white" href="SpeakingRosesTest/StatusPage/0">
                     <span class="fas fa-plus" aria-hidden="true"></span>
-                    &nbsp;Crear status
+                    &nbsp;Create status
                 </NavLink>
                 <hr />
             </div>
@@ -46,7 +46,7 @@
                             </span>
                             <input class="form-control" 
                             @oninput="SearchText"
-                            placeholder="Buscar status por StatusId..."
+                            placeholder="Search by Name..."
                             type="search">
                         </div>
                         <br />
@@ -54,12 +54,12 @@
                         <div>
                             <h6>
                                 <b>
-                                    Búsqueda estricta o laxa
+                                    Strict or lax search
                                     <button type="button" 
                                     class="btn btn-outline-dark" 
                                     data-bs-toggle-tooltip="tooltip" 
-                                    data-bs-placement="right" 
-                                    title="Una búsqueda laxa es más flexible, permite errores y devuelve resultados más amplios, algo que una búsqueda estricta no permite">
+                                    data-bs-placement="right"
+                                    title="A lax search is more flexible, allows for errors, and returns broader results, something that a strict search does not allow.">
                                         <i class="fas fa-circle-info"></i>
                                     </button>
                                 </b>
@@ -73,7 +73,7 @@
                                 id="strict-search" />
                                 <label class="form-check-label"
                                 for="strict-search">
-                                    Búsqueda estricta
+                                    Strict search
                                 </label>
                             </div>
                         </div>
@@ -81,7 +81,7 @@
                         <!--View type-->
                         <h6>
                             <b>
-                                Tipo de vista
+                                View type
                             </b>
                         </h6>
                         <div class="btn-group mb-3" role="group" aria-label="btngroup">
@@ -89,20 +89,20 @@
                             class="btn btn-dark"
                             onclick=@(() => ChangeView("table"))>
                                 <i class="fas fa-table"></i>
-                                Tabla
+                                Table
                             </button>
                             <button type="button"
                             class="btn btn-dark"
                             onclick=@(() => ChangeView("list"))>
                                 <i class="fas fa-th-list"></i>
-                                Lista
+                                List
                             </button>
                         </div>
                         <br />
                         <!--Registers per page-->
                         <h6>
                             <b>
-                                Registros por página
+                                Registers per page
                             </b>
                         </h6>
                         <div class="dropdown">
@@ -111,7 +111,7 @@
                             id="dropdown-registers-per-page"
                             data-bs-toggle="dropdown"
                             aria-expanded="false">
-                                Ver @RegistersPerPage
+                                See @RegistersPerPage
                             </button>
                             <ul class="dropdown-menu px-2 py-3" aria-labelledby="dropdown-registers-per-page">
                                 <li>
@@ -147,7 +147,7 @@
                                 data-bs-target="#modal-import"
                                 data-bs-placement="bottom"
                                 data-bs-toggle-tooltip="tooltip"
-                                title="Importar">
+                                title="Import">
                                     <i class="fas fa-file-import fa-xl"></i>
                                 </button>
                                 <div class="modal fade"
@@ -160,14 +160,14 @@
                                             <div class="modal-header">
                                                 <h5 class="modal-title" 
                                                 id="modal-import-title">
-                                                    Importar
+                                                    Import
                                                 </h5>
                                             </div>
                                             <div class="modal-body">
                                                 <form role="form">
                                                     <div class="input-group input-group-static mb-3">
                                                         <label for="importingfile">
-                                                            Archivo a importar
+                                                            File to import
                                                         </label>
                                                         <InputFile type="file"
                                                         id="importingfile"
@@ -196,7 +196,7 @@
                                                                 <i class="fas fa-file-excel"></i>
                                                             </span>
                                                             <span class="btn-inner--text">
-                                                                Importar de archivo Excel
+                                                                Import from Excel file
                                                             </span>
                                                         </button>
                                                     </div>
@@ -207,7 +207,7 @@
                                                 <button type="button" 
                                                 class="btn btn-outline-dark mb-0" 
                                                 data-bs-dismiss="modal">
-                                                    Cerrar
+                                                    Close
                                                 </button>
                                             </div>
                                         </div>
@@ -220,7 +220,7 @@
                                 data-bs-target="#modal-export"
                                 data-bs-placement="bottom"
                                 data-bs-toggle-tooltip="tooltip"
-                                title="Exportar">
+                                title="Export">
                                     <i class="fas fa-file-export fa-xl"></i>
                                 </button>
                                 <div class="modal fade"
@@ -233,13 +233,13 @@
                                             <div class="modal-header">
                                                 <h5 class="modal-title" 
                                                 id="modal-export-title">
-                                                    Exportar
+                                                    Export
                                                 </h5>
                                             </div>
                                             <div class="modal-body">
                                                 <form role="form">
                                                     <h6>
-                                                        Registros a exportar
+                                                        Registers to export
                                                     </h6>
                                                     <div class="form-group mb-3">
                                                         <div class="custom-control custom-radio">
@@ -252,7 +252,7 @@
                                                             @onchange="@(() => ExportationType = "just")">
                                                             <label class="custom-control-label" 
                                                             for="export-just">
-                                                                Sólo los registros seleccionados
+                                                                Only selected records
                                                             </label>
                                                         </div>
                                                         <div class="custom-control custom-radio">
@@ -264,12 +264,12 @@
                                                             @onchange="@(() => ExportationType = "all")">
                                                             <label class="custom-control-label" 
                                                             for="export-all">
-                                                                Todo
+                                                                All
                                                             </label>
                                                         </div>
                                                     </div>
                                                     <h6>
-                                                        Formatos
+                                                        Formats
                                                     </h6>
                                                     <!-- Export as PDF file button -->
                                                     <div class="d-flex justify-content-start">
@@ -280,7 +280,7 @@
                                                                 <i class="fas fa-file-pdf"></i>
                                                             </span>
                                                             <span class="btn-inner--text">
-                                                                Exportar como PDF
+                                                                Export as PDF
                                                             </span>
                                                         </button>
                                                         @if (DownloadPathForPDF != "")
@@ -288,7 +288,7 @@
                                                             <a class="btn btn-icon btn-success mx-3"
                                                             download
                                                             href="@DownloadPathForPDF">
-                                                                Descargar
+                                                                Download
                                                             </a>
                                                         }
                                                     </div>
@@ -301,7 +301,7 @@
                                                                 <i class="fas fa-file-excel"></i>
                                                             </span>
                                                             <span class="btn-inner--text">
-                                                                Exportar como Excel
+                                                                Export as Excel
                                                             </span>
                                                         </button>
                                                         @if (DownloadPathForExcel != "")
@@ -309,7 +309,7 @@
                                                             <a class="btn btn-icon btn-success mx-3"
                                                             download
                                                             href="@DownloadPathForExcel">
-                                                                Descargar
+                                                                Download
                                                             </a>
                                                         }
                                                     </div>
@@ -322,7 +322,7 @@
                                                                 <i class="fas fa-file-csv"></i>
                                                             </span>
                                                             <span class="btn-inner--text">
-                                                                Exportar como CSV
+                                                                Export as CSV
                                                             </span>
                                                         </button>
                                                         @if (DownloadPathForCSV != "")
@@ -330,7 +330,7 @@
                                                             <a class="btn btn-icon btn-success mx-3"
                                                             download
                                                             href="@DownloadPathForCSV">
-                                                                Descargar
+                                                                Download
                                                             </a>
                                                         }
                                                     </div>
@@ -340,7 +340,7 @@
                                                 <button type="button" 
                                                 class="btn btn-outline-dark mb-0" 
                                                 data-bs-dismiss="modal">
-                                                    Cerrar
+                                                    Close
                                                 </button>
                                             </div>
                                         </div>
@@ -348,13 +348,12 @@
                                 </div>
                                 <!--Massive actions-->
                                 <button type="button"
-                                disabled
                                 class="btn btn-outline-dark mx-2"
                                 data-bs-toggle="modal"
                                 data-bs-target="#modal-massive-actions"
                                 data-bs-placement="bottom"
                                 data-bs-toggle-tooltip="tooltip"
-                                title="Acciones masivas">
+                                title="Massive actions">
                                     <i class="fas fa-rocket fa-xl"></i>
                                 </button>
                                 <div class="modal fade"
@@ -367,13 +366,13 @@
                                             <div class="modal-header">
                                                 <h5 class="modal-title"
                                                 id="modal-massive-actions-title">
-                                                    Acciones masivas
+                                                    Massive actions
                                                 </h5>
                                             </div>
                                             <div class="modal-body">
                                                 <form role="form">
                                                     <h6>
-                                                        Registros a seleccionar
+                                                        Registers to select
                                                     </h6>
                                                     <div class="form-group mb-3">
                                                         <div class="custom-control custom-radio">
@@ -385,7 +384,7 @@
                                                             @onchange="@(() => MassiveActionType = "just")">
                                                             <label class="custom-control-label"
                                                             for="massiveactions-just">
-                                                                Sólo los registros seleccionados
+                                                                Only selected records
                                                             </label>
                                                         </div>
                                                         <div class="custom-control custom-radio">
@@ -396,12 +395,12 @@
                                                             @onchange="@(() => MassiveActionType = "all")">
                                                             <label class="custom-control-label"
                                                             for="massiveactions-all">
-                                                                Todo
+                                                                All
                                                             </label>
                                                         </div>
                                                     </div>
                                                     <h6>
-                                                        Acciones
+                                                        Actions
                                                     </h6>
                                                     <div class="form-group">
                                                         <!-- Copy button -->
@@ -412,7 +411,7 @@
                                                                 <i class="fas fa-copy"></i>
                                                             </span>
                                                             <span class="btn-inner--text">
-                                                                Copiar
+                                                                Copy
                                                             </span>
                                                         </button>
                                                     </div>
@@ -425,7 +424,7 @@
                                                                 <i class="fas fa-trash"></i>
                                                             </span>
                                                             <span class="btn-inner--text">
-                                                                Eliminar
+                                                                Delete
                                                             </span>
                                                         </button>
                                                     </div>
@@ -436,7 +435,7 @@
                                                 <button type="button" 
                                                 class="btn btn-outline-dark mb-0" 
                                                 data-bs-dismiss="modal">
-                                                    Cerrar
+                                                    Close
                                                 </button>
                                             </div>
                                         </div>
@@ -449,7 +448,7 @@
                 <!--Number of registers-->
                 <h6 class="mt-3">
                     <b>
-                        Nº de registros: @TotalRows
+                        Number of status: @TotalRows
                     </b>
                 </h6>
                 <!--Table-->
@@ -461,10 +460,8 @@
                                 <tr>
                                     <th></th>
                                     <th>ID</th>
-                                <th>Name</th>
-                                
-
-                                    <th>Acciones</th>
+                                    <th>Name</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -480,7 +477,7 @@
                                                 @onchange="(() => CheckList(statusId))" />
                                             </td>
                                             <td>@paginatedStatusDTO.lstStatus[i]?.StatusId</td>
-                                        <td>@paginatedStatusDTO.lstStatus[i]?.Name</td>
+                                            <td>@paginatedStatusDTO.lstStatus[i]?.Name</td>
                                         
 
                                             <td>
@@ -503,15 +500,15 @@
                                                         </div>
                                                         <hr class="horizontal light m-0">
                                                         <div class="toast-body text-white">
-                                                            ¿Esta seguro que desea borrar 
+                                                            Are you sure you want to delete
                                                             <br/>
-                                                            este registro con ID @statusId?
+                                                            this record with ID @statusId?
                                                             <br />
-                                                            Presione SI para borrar
+                                                            Press YES to delete
                                                             <br />
                                                             <button class="btn btn-outline-danger btn-sm mt-2 closetoast"
                                                                     onclick=@(() => Delete(statusId))>
-                                                                SI
+                                                                YES
                                                             </button>
                                                         </div>
                                                     </div>
@@ -538,8 +535,7 @@
                                     <div class="card shadow-lg mt-2">
                                         <div class="card-body">
                                             <p><b>ID: </b>@paginatedStatusDTO.lstStatus[i]?.StatusId</p>
-                                        <p><b>Name: </b>@paginatedStatusDTO.lstStatus[i]?.Name</p>
-                                        
+                                            <p><b>Name: </b>@paginatedStatusDTO.lstStatus[i]?.Name</p>
                                         </div>
                                         <div class="card-footer text-body-secondary">
                                             <div class="d-flex justify-content-end">
@@ -571,11 +567,11 @@
                                                     </div>
                                                     <hr class="horizontal light m-0">
                                                     <div class="toast-body text-white">
-                                                        ¿Esta seguro que desea borrar este registro con ID @statusId? Presione SI para borrar
+                                                        Are you sure you want to delete this record with ID @statusId? Press YES to delete
                                                         <br/>
                                                         <button class="btn btn-outline-danger btn-sm mt-2 closetoast"
                                                                 onclick=@(() => Delete(statusId))>
-                                                            SI
+                                                            YES
                                                         </button>
                                                     </div>
                                                 </div>
@@ -638,8 +634,6 @@
 
 @code {
     #region Properties
-    public List<folderForDashboard> lstFoldersAndPages { get; set; } = [];
-
     public int TotalRows { get; set; } = 0;
 
     public string? ChosenView { get; set; }
@@ -656,8 +650,6 @@
     public string? DownloadPathForExcel { get; set; } = "";
     public string? DownloadPathForPDF { get; set; } = "";
     public string? DownloadPathForCSV { get; set; } = "";
-
-    public User User = new();
 
     public Status Status = new();
 
@@ -682,57 +674,19 @@
     {
         try
         {
-            //Look for saved user in shared component, simulates a session
-            User = StateContainer.User == null ? new() : StateContainer.User;
-
-            lstFoldersAndPages = [];
-
             paginatedStatusDTO = new();
             paginatedStatusDTO.lstStatus = [];
 
-            if (User != null)
-            {
-                if (User.UserId != 0)
-                {
-                    //Logged user
-                    List<Menu> lstMenuWithPermission = rolemenuRepository
-                                    .GetAllByRoleIdAndPathForPermission(User.RoleId, "/SpeakingRosesTest/StatusPage");
-
-                    if (lstMenuWithPermission.Count == 0)
-                    {
-                        //Redirect to...
-                        NavigationManager.NavigateTo("403");
-                    }
-
-                    List<Menu> lstMenu = menuRepository
-                                            .GetAll();
-
-                    lstFoldersAndPages = rolemenuRepository
-                                            .GetAllPagesAndFoldersForDashboardByRoleId(User.RoleId);
-
-                    paginatedStatusDTO = statusRepository
-                                                .GetAllByStatusIdPaginated(
+            paginatedStatusDTO = statusRepository
+                                                .GetAllByNamePaginated(
                                                     "",
                                                     CheckStrict,
                                                     1,
                                                     RegistersPerPage);
 
-                    TotalRows = paginatedStatusDTO.TotalItems;
+            TotalRows = paginatedStatusDTO.TotalItems;
 
-                    ChosenView = "list";
-                }
-                else
-                {
-                    //Not logged user
-
-                    //Redirect to...
-                    NavigationManager.NavigateTo("Login");
-                }
-            }
-            else
-            {
-                //Impossible
-            }
+            ChosenView = "list";
 
             base.OnInitialized();
         }
@@ -743,8 +697,8 @@
                     Active = true,
                     DateTimeCreation = DateTime.Now,
                     DateTimeLastModification = DateTime.Now,
-                    UserCreationId = User.UserId == 0 ? 1 : User.UserId,
-                    UserLastModificationId = User.UserId == 0 ? 1 : User.UserId,
+                    UserCreationId = 1,
+                    UserLastModificationId = 1,
                     EmergencyLevel = 1,
                     Comment = "",
                     Message = ex.Message,
@@ -755,7 +709,7 @@
             failureRepository.Add(failure);
 
             Message = $@"<div class=""alert alert-danger text-white font-weight-bold"" role=""alert"">
-                                Hubo un error. Intente nuevamente. Mensaje del error: {ex.Message}
+                                There was an error. Please, try again. Error message: {ex.Message}
                             </div>";
         }
         finally
@@ -773,7 +727,7 @@
         catch (Exception ex)
         {
             Message = $@"<div class=""alert alert-danger text-white font-weight-bold"" role=""alert"">
-                            Hubo un error. Intente nuevamente. Mensaje del error: {ex.Message}
+                            There was an error. Please, try again. Error message: {ex.Message}
                          </div>";
 
             ProgressPercentForImportingFile = 100;
@@ -794,14 +748,14 @@
             if (!UploadPath.EndsWith(".xlsx"))
             {
                 ImportingMessage = $@"<div class=""alert alert-warning text-white font-weight-bold"" role=""alert"">
-                            Solo se permiten archivos Excel (.xlsx)
+                            Only Excel files (.xlsx) are allowed
                          </div>";
                 return;
             }
 
             UploadPath = $@"wwwroot/{UploadPath.Replace("\\","/")}";
 
-            List<Status> lstStatus = statusService.ImportExcel(UploadPath, User.UserId);
+            List<Status> lstStatus = statusService.ImportExcel(UploadPath);
 
             foreach (Status Status in lstStatus)
             {
@@ -809,7 +763,7 @@
             }
 
             paginatedStatusDTO = statusRepository
-                                                .GetAllByStatusIdPaginated(
+                                                .GetAllByNamePaginated(
                                                     "",
                                                     CheckStrict,
                                                     1,
@@ -826,7 +780,7 @@
         catch (Exception ex)
         {
             Message = $@"<div class=""alert alert-danger text-white font-weight-bold"" role=""alert"">
-                            Hubo un error. Intente nuevamente. Mensaje del error: {ex.Message}
+                            There was an error. Please, try again. Error message: {ex.Message}
                          </div>";
         }
         finally
@@ -877,7 +831,7 @@
         catch (Exception ex)
         {
             Message = $@"<div class=""alert alert-danger text-white font-weight-bold"" role=""alert"">
-                            Hubo un error. Intente nuevamente. Mensaje del error: {ex.Message}
+                            There was an error. Please, try again. Error message: {ex.Message}
                          </div>";
 
             ProgressPercentForImportingFile = 100;
@@ -909,8 +863,8 @@
                     Active = true,
                     DateTimeCreation = DateTime.Now,
                     DateTimeLastModification = DateTime.Now,
-                    UserCreationId = User.UserId == 0 ? 1 : User.UserId,
-                    UserLastModificationId = User.UserId == 0 ? 1 : User.UserId,
+                    UserCreationId = 1,
+                    UserLastModificationId = 1,
                     EmergencyLevel = 1,
                     Comment = "",
                     Message = ex.Message,
@@ -921,7 +875,7 @@
             failureRepository.Add(failure);
 
             Message = $@"<div class=""alert alert-danger text-white font-weight-bold"" role=""alert"">
-                                Hubo un error. Intente nuevamente. Mensaje del error: {ex.Message}
+                                There was an error. Please, try again. Error message: {ex.Message}
                             </div>";
         }
         finally
@@ -941,7 +895,7 @@
             TextToSearch = args.Value.ToString();
 
             paginatedStatusDTO = statusRepository
-                                        .GetAllByStatusIdPaginated(
+                                        .GetAllByNamePaginated(
                                             TextToSearch,
                                             CheckStrict,
                                             1,
@@ -959,8 +913,8 @@
                     Active = true,
                     DateTimeCreation = DateTime.Now,
                     DateTimeLastModification = DateTime.Now,
-                    UserCreationId = User.UserId == 0 ? 1 : User.UserId,
-                    UserLastModificationId = User.UserId == 0 ? 1 : User.UserId,
+                    UserCreationId = 1,
+                    UserLastModificationId = 1,
                     EmergencyLevel = 1,
                     Comment = "",
                     Message = ex.Message,
@@ -971,7 +925,7 @@
             failureRepository.Add(failure);
 
             Message = $@"<div class=""alert alert-danger text-white font-weight-bold"" role=""alert"">
-                                Hubo un error. Intente nuevamente. Mensaje del error: {ex.Message}
+                                There was an error. Please, try again. Error message: {ex.Message}
                             </div>";
         }
         finally
@@ -988,7 +942,7 @@
             if (paginatedStatusDTO.HasPreviousPage)
             {
                 paginatedStatusDTO = statusRepository
-                                            .GetAllByStatusIdPaginated(
+                                            .GetAllByNamePaginated(
                                                 TextToSearch,
                                                 CheckStrict,
                                                 (paginatedStatusDTO.PageIndex - 1),
@@ -1004,8 +958,8 @@
                     Active = true,
                     DateTimeCreation = DateTime.Now,
                     DateTimeLastModification = DateTime.Now,
-                    UserCreationId = User.UserId == 0 ? 1 : User.UserId,
-                    UserLastModificationId = User.UserId == 0 ? 1 : User.UserId,
+                    UserCreationId = 1,
+                    UserLastModificationId = 1,
                     EmergencyLevel = 1,
                     Comment = "",
                     Message = ex.Message,
@@ -1016,7 +970,7 @@
             failureRepository.Add(failure);
 
             Message = $@"<div class=""alert alert-danger text-white font-weight-bold"" role=""alert"">
-                                Hubo un error. Intente nuevamente. Mensaje del error: {ex.Message}
+                                There was an error. Please, try again. Error message: {ex.Message}
                             </div>";
         }
         finally
@@ -1031,7 +985,7 @@
         try
         {
             paginatedStatusDTO = statusRepository
-                                            .GetAllByStatusIdPaginated(
+                                            .GetAllByNamePaginated(
                                                 TextToSearch,
                                                 CheckStrict,
                                                 pageIndex,
@@ -1046,8 +1000,8 @@
                     Active = true,
                     DateTimeCreation = DateTime.Now,
                     DateTimeLastModification = DateTime.Now,
-                    UserCreationId = User.UserId == 0 ? 1 : User.UserId,
-                    UserLastModificationId = User.UserId == 0 ? 1 : User.UserId,
+                    UserCreationId = 1,
+                    UserLastModificationId = 1,
                     EmergencyLevel = 1,
                     Comment = "",
                     Message = ex.Message,
@@ -1058,7 +1012,7 @@
             failureRepository.Add(failure);
 
             Message = $@"<div class=""alert alert-danger text-white font-weight-bold"" role=""alert"">
-                                Hubo un error. Intente nuevamente. Mensaje del error: {ex.Message}
+                                There was an error. Please, try again. Error message: {ex.Message}
                             </div>";
         }
         finally
@@ -1075,7 +1029,7 @@
             if (paginatedStatusDTO.HasNextPage)
             {
                 paginatedStatusDTO = statusRepository
-                                            .GetAllByStatusIdPaginated(
+                                            .GetAllByNamePaginated(
                                                 TextToSearch,
                                                 CheckStrict,
                                                 (paginatedStatusDTO.PageIndex + 1),
@@ -1091,8 +1045,8 @@
                     Active = true,
                     DateTimeCreation = DateTime.Now,
                     DateTimeLastModification = DateTime.Now,
-                    UserCreationId = User.UserId == 0 ? 1 : User.UserId,
-                    UserLastModificationId = User.UserId == 0 ? 1 : User.UserId,
+                    UserCreationId = 1,
+                    UserLastModificationId = 1,
                     EmergencyLevel = 1,
                     Comment = "",
                     Message = ex.Message,
@@ -1103,7 +1057,7 @@
             failureRepository.Add(failure);
 
             Message = $@"<div class=""alert alert-danger text-white font-weight-bold"" role=""alert"">
-                                Hubo un error. Intente nuevamente. Mensaje del error: {ex.Message}
+                                There was an error. Please, try again. Error message: {ex.Message}
                             </div>";
         }
         finally
@@ -1128,7 +1082,7 @@
             statusRepository.DeleteByStatusId(statusId);
 
             paginatedStatusDTO = statusRepository
-                                        .GetAllByStatusIdPaginated(
+                                        .GetAllByNamePaginated(
                                             TextToSearch,
                                             CheckStrict,
                                             1,
@@ -1149,8 +1103,8 @@
                 Active = true,
                 DateTimeCreation = DateTime.Now,
                 DateTimeLastModification = DateTime.Now,
-                UserCreationId = User.UserId == 0 ? 1 : User.UserId,
-                UserLastModificationId = User.UserId == 0 ? 1 : User.UserId,
+                UserCreationId = 1,
+                UserLastModificationId = 1,
                 EmergencyLevel = 1,
                 Comment = "",
                 Message = ex.Message,
@@ -1161,7 +1115,7 @@
             failureRepository.Add(failure);
 
             Message = $@"<div class=""alert alert-danger text-white font-weight-bold"" role=""alert"">
-                                Hubo un error. Intente nuevamente. Mensaje del error: {ex.Message}
+                                There was an error. Please, try again. Error message: {ex.Message}
                             </div>";
         }
         finally
@@ -1196,8 +1150,8 @@
                     Active = true,
                     DateTimeCreation = DateTime.Now,
                     DateTimeLastModification = DateTime.Now,
-                    UserCreationId = User.UserId == 0 ? 1 : User.UserId,
-                    UserLastModificationId = User.UserId == 0 ? 1 : User.UserId,
+                    UserCreationId = 1,
+                    UserLastModificationId = 1,
                     EmergencyLevel = 1,
                     Comment = "",
                     Message = ex.Message,
@@ -1208,7 +1162,7 @@
             failureRepository.Add(failure);
 
             Message = $@"<div class=""alert alert-danger text-white font-weight-bold"" role=""alert"">
-                                Hubo un error. Intente nuevamente. Mensaje del error: {ex.Message}
+                                There was an error. Please, try again. Error message: {ex.Message}
                             </div>";
         }
         finally
@@ -1253,8 +1207,8 @@
                 Active = true,
                 DateTimeCreation = DateTime.Now,
                 DateTimeLastModification = DateTime.Now,
-                UserCreationId = User.UserId == 0 ? 1 : User.UserId,
-                UserLastModificationId = User.UserId == 0 ? 1 : User.UserId,
+                UserCreationId = 1,
+                UserLastModificationId = 1,
                 EmergencyLevel = 1,
                 Comment = "",
                 Message = ex.Message,
@@ -1265,7 +1219,7 @@
             failureRepository.Add(failure);
 
             Message = $@"<div class=""alert alert-danger text-white font-weight-bold"" role=""alert"">
-                                Hubo un error. Intente nuevamente. Mensaje del error: {ex.Message}
+                                There was an error. Please, try again. Error message: {ex.Message}
                             </div>";
         }
         finally
@@ -1307,8 +1261,8 @@
                 Active = true,
                 DateTimeCreation = DateTime.Now,
                 DateTimeLastModification = DateTime.Now,
-                UserCreationId = User.UserId == 0 ? 1 : User.UserId,
-                UserLastModificationId = User.UserId == 0 ? 1 : User.UserId,
+                UserCreationId = 1,
+                UserLastModificationId = 1,
                 EmergencyLevel = 1,
                 Comment = "",
                 Message = ex.Message,
@@ -1319,7 +1273,7 @@
             failureRepository.Add(failure);
 
             Message = $@"<div class=""alert alert-danger text-white font-weight-bold"" role=""alert"">
-                                Hubo un error. Intente nuevamente. Mensaje del error: {ex.Message}
+                                There was an error. Please, try again. Error message: {ex.Message}
                             </div>";
         }
         finally
@@ -1361,8 +1315,8 @@
                 Active = true,
                 DateTimeCreation = DateTime.Now,
                 DateTimeLastModification = DateTime.Now,
-                UserCreationId = User.UserId == 0 ? 1 : User.UserId,
-                UserLastModificationId = User.UserId == 0 ? 1 : User.UserId,
+                UserCreationId = 1,
+                UserLastModificationId = 1,
                 EmergencyLevel = 1,
                 Comment = "",
                 Message = ex.Message,
@@ -1373,7 +1327,7 @@
             failureRepository.Add(failure);
 
             Message = $@"<div class=""alert alert-danger text-white font-weight-bold"" role=""alert"">
-                                Hubo un error. Intente nuevamente. Mensaje del error: {ex.Message}
+                                There was an error. Please, try again. Error message: {ex.Message}
                             </div>";
         }
         finally
@@ -1410,7 +1364,7 @@
             }
 
             paginatedStatusDTO = statusRepository
-                                                .GetAllByStatusIdPaginated(
+                                                .GetAllByNamePaginated(
                                                     "",
                                                     CheckStrict,
                                                     1,
@@ -1431,8 +1385,8 @@
                     Active = true,
                     DateTimeCreation = DateTime.Now,
                     DateTimeLastModification = DateTime.Now,
-                    UserCreationId = User.UserId == 0 ? 1 : User.UserId,
-                    UserLastModificationId = User.UserId == 0 ? 1 : User.UserId,
+                    UserCreationId = 1,
+                    UserLastModificationId = 1,
                     EmergencyLevel = 1,
                     Comment = "",
                     Message = ex.Message,
@@ -1443,7 +1397,7 @@
             failureRepository.Add(failure);
 
             Message = $@"<div class=""alert alert-danger text-white font-weight-bold"" role=""alert"">
-                                Hubo un error. Intente nuevamente. Mensaje del error: {ex.Message}
+                                There was an error. Please, try again. Error message: {ex.Message}
                             </div>";
         }
         finally
@@ -1477,7 +1431,7 @@
             }
 
             paginatedStatusDTO = statusRepository
-                                                .GetAllByStatusIdPaginated(
+                                                .GetAllByNamePaginated(
                                                     "",
                                                     CheckStrict,
                                                     1,
@@ -1498,8 +1452,8 @@
                     Active = true,
                     DateTimeCreation = DateTime.Now,
                     DateTimeLastModification = DateTime.Now,
-                    UserCreationId = User.UserId == 0 ? 1 : User.UserId,
-                    UserLastModificationId = User.UserId == 0 ? 1 : User.UserId,
+                    UserCreationId = 1,
+                    UserLastModificationId = 1,
                     EmergencyLevel = 1,
                     Comment = "",
                     Message = ex.Message,
@@ -1510,7 +1464,7 @@
             failureRepository.Add(failure);
 
             Message = $@"<div class=""alert alert-danger text-white font-weight-bold"" role=""alert"">
-                                Hubo un error. Intente nuevamente. Mensaje del error: {ex.Message}
+                                There was an error. Please, try again. Error message: {ex.Message}
                             </div>";
         }
         finally

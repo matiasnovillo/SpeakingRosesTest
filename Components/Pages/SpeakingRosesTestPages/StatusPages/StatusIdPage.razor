@@ -10,14 +10,14 @@
 
 @if (StatusId == 0)
 {
-    <PageTitle>Agregar status - SpeakingRosesTest</PageTitle>
+    <PageTitle>Add status - SpeakingRosesTest</PageTitle>
 }
 else
 {
-    <PageTitle>Editar status - SpeakingRosesTest</PageTitle>
+    <PageTitle>Edit status - SpeakingRosesTest</PageTitle>
 }
 
-<SpeakingRosesTest.Components.Layout.SideNav lstFoldersAndPages="lstFoldersAndPages"></SpeakingRosesTest.Components.Layout.SideNav>
+<SpeakingRosesTest.Components.Layout.SideNav></SpeakingRosesTest.Components.Layout.SideNav>
 
 <div class="main-content position-relative max-height-vh-100 h-100">
     <SpeakingRosesTest.Components.Layout.NavBarDashboard Pagina="Status"></SpeakingRosesTest.Components.Layout.NavBarDashboard>
@@ -31,16 +31,16 @@ else
                 <h3 class="mb-3">
                     @if (StatusId == 0)
                     {
-                        <span>Agregar status</span>
+                        <span>Add status</span>
                     }
                     else
                     {
-                        <span>Editar status</span>
+                        <span>Edit status</span>
                     }
                 </h3>
                 <NavLink class="btn btn-outline-dark" href="SpeakingRosesTest/StatusPage">
                     <span class="fas fa-chevron-left"></span>
-                    &nbsp;Volver
+                    &nbsp;Go back
                 </NavLink>
                 <hr />
             </div>
@@ -72,16 +72,16 @@ else
                             <i class="fas fa-pen"></i>
                             @if (StatusId == 0)
                             {
-                                <span>Agregar</span>
+                                <span>Add</span>
                             }
                             else
                             {
-                                <span>Editar</span>
+                                <span>Edit</span>
                             }
                         </button>
                         <NavLink class="btn btn-outline-dark mx-3" href="SpeakingRosesTest/StatusPage">
                             <span class="fas fa-chevron-left"></span>
-                            &nbsp;Volver
+                            &nbsp;Go back
                         </NavLink>
                     </div>
                 </form>
@@ -96,10 +96,6 @@ else
 
 @code {
     #region Properties
-    public List<folderForDashboard> lstFoldersAndPages = [];
-
-    public List<Role> lstRole { get; set; } = [];
-
     [Parameter]
     public int StatusId { get; set; }
 
@@ -107,8 +103,6 @@ else
 
     [SupplyParameterFromForm]
     public Status Status { get; set; } = new();
-
-    public User User { get; set; } = new();
 
     //Error messages for inputs
     public string ErrorMessageStatusId { get; set; } = "";
@@ -118,76 +112,23 @@ else
     public string ErrorMessageUserCreationId { get; set; } = "";
     public string ErrorMessageUserLastModificationId { get; set; } = "";
     public string ErrorMessageName { get; set; } = "";
-    
-
-    //Progress bars for uploaders
-    
-    
-    //FOREIGN LISTS (TABLES)
-    
     #endregion
 
     protected override void OnInitialized()
     {
         try
         {
-            //Look for saved user in shared component, simulates a session
-            User = StateContainer.User == null ? new() : StateContainer.User;
-
-            lstFoldersAndPages = [];
-            Status = new();
-
-            if (User != null)
+            if (StatusId == 0)
             {
-                if (User.UserId != 0)
-                {
-                    //Logged user
-                    List<Menu> lstMenuWithPermission = rolemenuRepository
-                                    .GetAllByRoleIdAndPathForPermission(User.RoleId, "/SpeakingRosesTest/StatusPage");
-
-                    if (lstMenuWithPermission.Count == 0)
-                    {
-                        //Redirect to...
-                        NavigationManager.NavigateTo("403");
-                    }
-
-                    List<Menu> lstMenu = menuRepository
-                                        .GetAll();
-
-                    lstFoldersAndPages = rolemenuRepository
-                                            .GetAllPagesAndFoldersForDashboardByRoleId(User.RoleId);
-
-                    lstRole = roleRepository.GetAll();
-
-                    //FOREIGN LISTS (TABLES)
-                    
-
-                    if (StatusId == 0)
-                    {
-                        //Create new Status
-                        Status = new();
-                    }
-                    else
-                    {
-                        //Edit Status
-
-                        Status = statusRepository
-                                    .GetByStatusId(StatusId);
-
-                        
-                    }                    
-                }
-                else
-                {
-                    //Not logged user
-
-                    //Redirect to...
-                    NavigationManager.NavigateTo("Login");
-                }
+                //Create new Status
+                Status = new();
             }
             else
             {
-                //Impossible
+                //Edit Status
+
+                Status = statusRepository
+                            .GetByStatusId(StatusId);
             }
 
             base.OnInitialized();
@@ -199,8 +140,8 @@ else
                     Active = true,
                     DateTimeCreation = DateTime.Now,
                     DateTimeLastModification = DateTime.Now,
-                    UserCreationId = User.UserId == 0 ? 1 : User.UserId,
-                    UserLastModificationId = User.UserId == 0 ? 1 : User.UserId,
+                    UserCreationId = 1,
+                    UserLastModificationId = 1,
                     EmergencyLevel = 1,
                     Comment = "",
                     Message = ex.Message,
@@ -211,7 +152,7 @@ else
             failureRepository.Add(failure);
 
             Message = $@"<div class=""alert alert-danger text-white font-weight-bold"" role=""alert"">
-                                Hubo un error. Intente nuevamente. Mensaje del error: {ex.Message}
+                                There was an error. Please, try again. Error message: {ex.Message}
                             </div>";
         }
     }
@@ -224,8 +165,8 @@ else
             {
                 //Create new Status
                 Status.Active = true;
-                Status.UserCreationId = User.UserId;
-                Status.UserLastModificationId = User.UserId;
+                Status.UserCreationId = 1;
+                Status.UserLastModificationId = 1;
                 Status.DateTimeCreation = DateTime.Now;
                 Status.DateTimeLastModification = DateTime.Now;
 
@@ -244,7 +185,7 @@ else
             {
                 //Update data
                 Status.DateTimeLastModification = DateTime.Now;
-                Status.UserLastModificationId = User.UserId;
+                Status.UserLastModificationId = 1;
 
                 if(Check("") == null)
                 {
@@ -263,8 +204,8 @@ else
                     Active = true,
                     DateTimeCreation = DateTime.Now,
                     DateTimeLastModification = DateTime.Now,
-                    UserCreationId = User.UserId == 0 ? 1 : User.UserId,
-                    UserLastModificationId = User.UserId == 0 ? 1 : User.UserId,
+                    UserCreationId = 1,
+                    UserLastModificationId = 1,
                     EmergencyLevel = 1,
                     Comment = "",
                     Message = ex.Message,
@@ -275,7 +216,7 @@ else
             failureRepository.Add(failure);
 
             Message = $@"<div class=""alert alert-danger text-white font-weight-bold"" role=""alert"">
-                                Hubo un error. Intente nuevamente. Mensaje del error: {ex.Message}
+                                There was an error. Please, try again. Error message: {ex.Message}
                             </div>";
         }
         finally
@@ -346,8 +287,8 @@ else
                     Active = true,
                     DateTimeCreation = DateTime.Now,
                     DateTimeLastModification = DateTime.Now,
-                    UserCreationId = User.UserId == 0 ? 1 : User.UserId,
-                    UserLastModificationId = User.UserId == 0 ? 1 : User.UserId,
+                    UserCreationId = 1,
+                    UserLastModificationId = 1,
                     EmergencyLevel = 1,
                     Comment = "",
                     Message = ex.Message,
@@ -358,7 +299,7 @@ else
             failureRepository.Add(failure);
 
             Message = $@"<div class=""alert alert-danger text-white font-weight-bold"" role=""alert"">
-                                Hubo un error. Intente nuevamente. Mensaje del error: {ex.Message}
+                                There was an error. Please, try again. Error message: {ex.Message}
                             </div>";
 
             return null;

@@ -278,7 +278,7 @@ namespace SpeakingRosesTest.Areas.SpeakingRosesTest.TasksBack.Services
         #endregion
 
         #region Importations
-        public List<Tasks> ImportExcel(string path, int userId)
+        public List<Tasks> ImportExcel(string path)
         {
             List<Tasks> lstTasks = [];
 
@@ -304,8 +304,8 @@ namespace SpeakingRosesTest.Areas.SpeakingRosesTest.TasksBack.Services
                         Active = true,
                         DateTimeCreation = DateTime.Now,
                         DateTimeLastModification = DateTime.Now,
-                        UserCreationId = userId,
-                        UserLastModificationId = userId,
+                        UserCreationId = 1,
+                        UserLastModificationId = 1,
                         Title = Title,
                         Description = Description,
                         PriorityId = PriorityId,

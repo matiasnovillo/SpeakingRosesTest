@@ -30,7 +30,7 @@ namespace SpeakingRosesTest.Areas.SpeakingRosesTest.StatusBack.Interfaces
 
         List<Status> GetAllByStatusIdForModal(string textToSearch);
 
-        paginatedStatusDTO GetAllByStatusIdPaginated(string textToSearch,
+        paginatedStatusDTO GetAllByNamePaginated(string textToSearch,
             bool strictSearch,
             int pageIndex,
             int pageSize);

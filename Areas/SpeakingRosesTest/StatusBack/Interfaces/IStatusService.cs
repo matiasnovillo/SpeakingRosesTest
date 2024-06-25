@@ -22,6 +22,6 @@ namespace SpeakingRosesTest.Areas.SpeakingRosesTest.StatusBack.Interfaces
 
         void ExportToPDF(string path, List<Status> lstStatus);
 
-        List<Status> ImportExcel(string path, int userId);
+        List<Status> ImportExcel(string path);
     }
 }

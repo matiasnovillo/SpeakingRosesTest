@@ -19,8 +19,6 @@ namespace SpeakingRosesTest.Areas.SpeakingRosesTest.PriorityBack.DTOs
         public List<Priority?> lstPriority { get; set; }
         public List<User?> lstUserCreation { get; set; }
         public List<User?> lstUserLastModification { get; set; }
-
-        //FOREIGN LISTS (TABLES)
         
 
         public int TotalItems { get; set; }

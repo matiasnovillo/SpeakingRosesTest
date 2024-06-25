@@ -135,17 +135,35 @@ namespace SpeakingRosesTest.Areas.System.FailureBack.Repositories
 
                 foreach (Failure failure in lstFailure)
                 {
-                    User UserCreation = _context.User
-                        .AsQueryable()
-                        .Where(x => x.UserCreationId == failure.UserCreationId)
-                        .FirstOrDefault();
+                    User UserCreation = new()
+                    {
+                        Active = true,
+                        DateTimeCreation = DateTime.Now,
+                        DateTimeLastModification = DateTime.Now,
+                        Email = "",
+                        Password = "",
+                        ProfilePicture = "",
+                        RoleId = 1,
+                        UserCreationId = 1,
+                        UserId = 1,
+                        UserLastModificationId = 1
+                    };
 
                     lstUserCreation.Add(UserCreation);
 
-                    User UserLastModification = _context.User
-                       .AsQueryable()
-                       .Where(x => x.UserLastModificationId == failure.UserLastModificationId)
-                       .FirstOrDefault();
+                    User UserLastModification = new()
+                    {
+                        Active = true,
+                        DateTimeCreation = DateTime.Now,
+                        DateTimeLastModification = DateTime.Now,
+                        Email = "",
+                        Password = "",
+                        ProfilePicture = "",
+                        RoleId = 1,
+                        UserCreationId = 1,
+                        UserId = 1,
+                        UserLastModificationId = 1
+                    };
 
                     lstUserLastModification.Add(UserLastModification);
                 }

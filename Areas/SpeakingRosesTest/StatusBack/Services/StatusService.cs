@@ -250,7 +250,7 @@ namespace SpeakingRosesTest.Areas.SpeakingRosesTest.StatusBack.Services
         #endregion
 
         #region Importations
-        public List<Status> ImportExcel(string path, int userId)
+        public List<Status> ImportExcel(string path)
         {
             List<Status> lstStatus = [];
 
@@ -272,8 +272,8 @@ namespace SpeakingRosesTest.Areas.SpeakingRosesTest.StatusBack.Services
                         Active = true,
                         DateTimeCreation = DateTime.Now,
                         DateTimeLastModification = DateTime.Now,
-                        UserCreationId = userId,
-                        UserLastModificationId = userId,
+                        UserCreationId = 1,
+                        UserLastModificationId = 1,
                         Name = Name,
                         
                     };

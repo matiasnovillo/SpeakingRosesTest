@@ -30,7 +30,7 @@ namespace SpeakingRosesTest.Areas.SpeakingRosesTest.PriorityBack.Interfaces
 
         List<Priority> GetAllByPriorityIdForModal(string textToSearch);
 
-        paginatedPriorityDTO GetAllByPriorityIdPaginated(string textToSearch,
+        paginatedPriorityDTO GetAllByNamePaginated(string textToSearch,
             bool strictSearch,
             int pageIndex,
             int pageSize);

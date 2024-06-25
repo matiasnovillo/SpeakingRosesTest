@@ -1,19 +1,8 @@
 using SpeakingRosesTest.Components.Shared;
 using SpeakingRosesTest.Components;
 using SpeakingRosesTest.DatabaseContexts;
-using SpeakingRosesTest.Middlewares;
-using SpeakingRosesTest.Areas.CMS.UserBack.Repositories;
-using SpeakingRosesTest.Areas.CMS.UserBack.Services;
-using SpeakingRosesTest.Areas.CMS.RoleBack.Repositories;
-using SpeakingRosesTest.Areas.CMS.RoleBack.Services;
-using SpeakingRosesTest.Areas.CMS.MenuBack.Repositories;
-using SpeakingRosesTest.Areas.CMS.MenuBack.Services;
-using SpeakingRosesTest.Areas.CMS.RoleMenuBack.Repositories;
-using SpeakingRosesTest.Areas.CMS.RoleMenuBack.Services;
 using SpeakingRosesTest.Areas.System.FailureBack.Repositories;
 using SpeakingRosesTest.Areas.System.FailureBack.Services;
-using SpeakingRosesTest.Areas.System.ParameterBack.Repositories;
-using SpeakingRosesTest.Areas.System.ParameterBack.Services;
 using Microsoft.Extensions.Caching.Memory;
 using SpeakingRosesTest.Areas.SpeakingRosesTest.TasksBack.Repositories;
 using SpeakingRosesTest.Areas.SpeakingRosesTest.TasksBack.Services;
@@ -38,18 +27,8 @@ builder.Services.AddHttpClient();
 builder.Services.AddDbContext<TaskDBContext>(ServiceLifetime.Scoped);
 
 //Set access to repositories
-builder.Services.AddScoped<UserRepository>();
-builder.Services.AddScoped<UserService>();
-builder.Services.AddScoped<RoleRepository>();
-builder.Services.AddScoped<RoleService>();
-builder.Services.AddScoped<MenuRepository>();
-builder.Services.AddScoped<MenuService>();
-builder.Services.AddScoped<RoleMenuRepository>();
-builder.Services.AddScoped<RoleMenuService>();
 builder.Services.AddScoped<FailureRepository>();
 builder.Services.AddScoped<FailureService>();
-builder.Services.AddScoped<ParameterRepository>();
-builder.Services.AddScoped<ParameterService>();
 
 //Set access to repositories: SpeakingRosesTest
 builder.Services.AddScoped<TasksRepository>();

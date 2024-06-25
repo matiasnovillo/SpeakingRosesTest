@@ -106,7 +106,7 @@ namespace SpeakingRosesTest.Areas.SpeakingRosesTest.PriorityBack.Repositories
             catch (Exception) { throw; }
         }
 
-        public paginatedPriorityDTO GetAllByPriorityIdPaginated(string textToSearch,
+        public paginatedPriorityDTO GetAllByNamePaginated(string textToSearch,
             bool strictSearch,
             int pageIndex, 
             int pageSize)
@@ -124,9 +124,9 @@ namespace SpeakingRosesTest.Areas.SpeakingRosesTest.PriorityBack.Repositories
                 List<Priority> lstPriority = _context.Priority
                         .AsQueryable()
                         .Where(x => strictSearch ?
-                            words.All(word => x.PriorityId.ToString().Contains(word)) :
-                            words.Any(word => x.PriorityId.ToString().Contains(word)))
-                        .OrderByDescending(x => x.DateTimeLastModification)
+                            words.All(word => x.Name.Contains(word)) :
+                            words.Any(word => x.Name.Contains(word)))
+                        .OrderBy(x => x.Name)
                         .Skip((pageIndex - 1) * pageSize)
                         .Take(pageSize)
                         .ToList();
@@ -136,17 +136,35 @@ namespace SpeakingRosesTest.Areas.SpeakingRosesTest.PriorityBack.Repositories
                 foreach (Priority priority in lstPriority)
                 {
 
-                    User UserCreation = _context.User
-                        .AsQueryable()
-                        .Where(x => x.UserCreationId == priority.UserCreationId)
-                        .FirstOrDefault();
+                    User UserCreation = new() 
+                    { 
+                        Active = true,
+                        DateTimeCreation = DateTime.Now,
+                        DateTimeLastModification = DateTime.Now,
+                        Email = "",
+                        Password = "",
+                        ProfilePicture = "",
+                        RoleId = 1,
+                        UserCreationId = 1,
+                        UserId = 1,
+                        UserLastModificationId = 1
+                    };
 
                     lstUserCreation.Add(UserCreation);
 
-                    User UserLastModification = _context.User
-                       .AsQueryable()
-                       .Where(x => x.UserLastModificationId == priority.UserLastModificationId)
-                       .FirstOrDefault();
+                    User UserLastModification = new()
+                    {
+                        Active = true,
+                        DateTimeCreation = DateTime.Now,
+                        DateTimeLastModification = DateTime.Now,
+                        Email = "",
+                        Password = "",
+                        ProfilePicture = "",
+                        RoleId = 1,
+                        UserCreationId = 1,
+                        UserId = 1,
+                        UserLastModificationId = 1
+                    };
 
                     lstUserLastModification.Add(UserLastModification);
                 }

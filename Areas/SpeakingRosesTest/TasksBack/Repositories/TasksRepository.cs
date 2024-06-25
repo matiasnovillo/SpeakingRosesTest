@@ -6,6 +6,8 @@ using SpeakingRosesTest.Areas.SpeakingRosesTest.TasksBack.Interfaces;
 using SpeakingRosesTest.DatabaseContexts;
 using System.Text.RegularExpressions;
 using System.Data;
+using SpeakingRosesTest.Areas.SpeakingRosesTest.PriorityBack.Entities;
+using SpeakingRosesTest.Areas.SpeakingRosesTest.StatusBack.Entities;
 
 /*
  * GUID:e6c09dfe-3a3e-461b-b3f9-734aee05fc7b
@@ -132,23 +134,55 @@ namespace SpeakingRosesTest.Areas.SpeakingRosesTest.TasksBack.Repositories
                         .ToList();
                 List<User> lstUserCreation = [];
                 List<User> lstUserLastModification = [];
+                List<Priority> lstPriority = [];
+                List<Status> lstStatus = [];
 
                 foreach (Tasks tasks in lstTasks)
                 {
 
-                    User UserCreation = _context.User
-                        .AsQueryable()
-                        .Where(x => x.UserCreationId == tasks.UserCreationId)
-                        .FirstOrDefault();
+                    User UserCreation = new()
+                    {
+                        Active = true,
+                        DateTimeCreation = DateTime.Now,
+                        DateTimeLastModification = DateTime.Now,
+                        Email = "",
+                        Password = "",
+                        ProfilePicture = "",
+                        RoleId = 1,
+                        UserCreationId = 1,
+                        UserId = 1,
+                        UserLastModificationId = 1
+                    };
 
                     lstUserCreation.Add(UserCreation);
 
-                    User UserLastModification = _context.User
-                       .AsQueryable()
-                       .Where(x => x.UserLastModificationId == tasks.UserLastModificationId)
-                       .FirstOrDefault();
+                    User UserLastModification = new()
+                    {
+                        Active = true,
+                        DateTimeCreation = DateTime.Now,
+                        DateTimeLastModification = DateTime.Now,
+                        Email = "",
+                        Password = "",
+                        ProfilePicture = "",
+                        RoleId = 1,
+                        UserCreationId = 1,
+                        UserId = 1,
+                        UserLastModificationId = 1
+                    };
 
                     lstUserLastModification.Add(UserLastModification);
+
+                    Status Status = _context.Status
+                        .Where(x => x.StatusId == tasks.StatusId)
+                        .FirstOrDefault();
+
+                    lstStatus.Add(Status);
+
+                    Priority Priority = _context.Priority
+                        .Where(x => x.PriorityId == tasks.PriorityId)
+                        .FirstOrDefault();
+
+                    lstPriority.Add(Priority);
                 }
 
                 return new paginatedTasksDTO
@@ -156,6 +190,8 @@ namespace SpeakingRosesTest.Areas.SpeakingRosesTest.TasksBack.Repositories
                     lstTasks = lstTasks,
                     lstUserCreation = lstUserCreation,
                     lstUserLastModification = lstUserLastModification,
+                    lstPriority = lstPriority,
+                    lstStatus = lstStatus,
                     TotalItems = TotalTasks,
                     PageIndex = pageIndex,
                     PageSize = pageSize

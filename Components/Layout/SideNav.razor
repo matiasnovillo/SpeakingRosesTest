@@ -6,11 +6,11 @@
            id="iconSidenav"></i>
         <NavLink class="navbar-brand m-0"
                  href="">
-            <img src="/img/SpeakingRosesTest/SpeakingRosesTest.png"
+            <img src="/img/SpeakingRosesTest/SpeakingRosesTest.svg"
                  class="navbar-brand-img h-100"
                  alt="main_logo">
             <span class="ms-1 font-weight-bold text-white">
-                SpeakingRosesTest
+                Speaking Roses Test
             </span>
         </NavLink>
     </div>
@@ -37,49 +37,60 @@
                     </span>
                 </NavLink>
             </li>
-            @if (lstFoldersAndPages != null)
-            {
-                @foreach (folderForDashboard folderandpages in lstFoldersAndPages)
-                {
-                    <li class="nav-item">
-                        <a data-bs-toggle="collapse"
-                           href="#@folderandpages.Folder.Name"
-                           class="nav-link text-white"
-                           aria-controls="@folderandpages.Folder.Name"
-                           role="button"
-                           aria-expanded="false">
-                            <i class="fas fa-folder"></i>
-                            <span class="nav-link-text ms-2 ps-1">
-                                @folderandpages.Folder.Name
-                            </span>
-                        </a>
-                        <div class="collapse"
-                             id="@folderandpages.Folder.Name">
-                            <ul class="nav">
-                                @foreach (itemForFolderForDashboard item in folderandpages.Pages)
-                                {
-                                    <li class="nav-item">
-                                        <a class="nav-link text-white"
-                                        href="@item.URLPath">
-                                            <span class="sidenav-mini-icon">
-                                                @item.IconURLPath
-                                            </span>
-                                            <span class="sidenav-normal ms-2 ps-1">
-                                               @item.Name
-                                            </span>
-                                        </a>
-                                    </li>
-                                }
-                            </ul>
-                        </div>
-                    </li>
-                }
-            }
+            <li class="nav-item">
+                <a data-bs-toggle="collapse"
+                   href="#SpeakingRosesTest"
+                   class="nav-link text-white"
+                   aria-controls="SpeakingRosesTest"
+                   role="button"
+                   aria-expanded="false">
+                    <i class="fas fa-folder"></i>
+                    <span class="nav-link-text ms-2 ps-1">
+                        Speaking Roses Test
+                    </span>
+                </a>
+                <div class="collapse"
+                     id="SpeakingRosesTest">
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a class="nav-link text-white"
+                               href="/SpeakingRosesTest/TasksPage">
+                                <span class="sidenav-mini-icon">
+                                    T
+                                </span>
+                                <span class="sidenav-normal ms-2 ps-1">
+                                    Tasks
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white"
+                               href="/SpeakingRosesTest/PriorityPage">
+                                <span class="sidenav-mini-icon">
+                                    P
+                                </span>
+                                <span class="sidenav-normal ms-2 ps-1">
+                                    Priorities
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white"
+                               href="/SpeakingRosesTest/StatusPage">
+                                <span class="sidenav-mini-icon">
+                                    S
+                                </span>
+                                <span class="sidenav-normal ms-2 ps-1">
+                                    Status
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
         </ul>
     </div>
 </aside>
 
 @code{
-    [Parameter]
-    public List<folderForDashboard> lstFoldersAndPages { get; set; }
 }
